@@ -8,8 +8,8 @@ function IniciarSesion() {
 //-----------AJAX-----------//
 //--------------------------//
 function SetIniciarSesion() {
-    var pRequest = "{'pUsuario':'a','pContrasena':'b'}";
-
+    var pRequest = "{'pUsuario':'a'}";
+    alert(pRequest);
     $.ajax({
         type: "POST",
         url: "Inicio.aspx/LoadWeb",
@@ -19,6 +19,7 @@ function SetIniciarSesion() {
         success: function (pRespuesta) {
             console.log("Hola2");
             console.log(pRespuesta);
+            $("#caja").text(pRespuesta);
         }
     });
 }
