@@ -16,7 +16,6 @@ public class Conector
 
     public static string Cancelar(string uuid)
     {
-        //Cancel
         string jsoncPost = "{" +
                                "\"credentials\": {" +
                                        "\"id\": \"94327\"," +
@@ -38,12 +37,48 @@ public class Conector
         return contents;
     }
 
-    public static string NotaCredito()
+    public static string NotaCredito(string encodeXML)
     {
-        return "";
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
+
+        string jsonPost = "{" +
+                                "\"credentials\":  {" +
+                                    "\"id\": \"94327\"," +
+                                     "\"token\": \"$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq\"" +
+
+                                "}," +
+                                "\"issuer\": {" +
+                                    "\"rfc\": \"MAG041126GT8\"" +
+
+                                "}," +
+                                "\"receiver\": {" +
+                                    "\"emails\":" +
+                                        "[" +
+                                            "{" +
+                                                "\"email\": \"mferna.92@gmail.com\"," +
+                                                 "\"format\": \"xml+pdf\"," +
+                                                 "\"template\": \"letter\"" +
+                                            "}" +
+                                        "]" +
+                                "}," +
+                                "\"document\": {" +
+                                    "\"ref-id\": \"" + DateTime.Now.Ticks.ToString() + "\"," +
+                                    "\"certificate-number\":\"20001000000300022755\"," +
+                                    "\"section\": \"all\"," +
+                                    "\"format\": \"pdf\"," +
+                                    "\"template\": \"letter\"," +
+                                    "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
+                                    "\"content\": \"" + encodeXML + "\"" +
+                                "}" +
+                           "}";
+
+        string contents = "";
+        contents = DownloadPageAsync(Uri, jsonPost, "POST");
+
+        return contents;
     }
 
-    public static string Pago(String encodeXML)
+    public static string Pago(string encodeXML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
         
@@ -73,7 +108,7 @@ public class Conector
                                     "\"section\": \"all\"," +
                                     "\"format\": \"pdf\"," +
                                     "\"template\": \"letter\"," +
-                                    "\"type\": \"application / vnd.diverza.cfdi_3.3_complemento + xml\"," +
+                                    "\"type\": \"application/vnd.diverza.cfdi_3.3_complemento+xml\"," +
                                     "\"content\": \"" + encodeXML + "\"" +
                                 "}" +
                            "}";
@@ -83,8 +118,7 @@ public class Conector
 
         return contents;
     }
-
-    //Funcion Conector
+    
     public static string Emitir(string encodeXML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";

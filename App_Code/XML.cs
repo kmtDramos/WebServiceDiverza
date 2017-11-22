@@ -5,6 +5,84 @@ using System.Web;
 
 public class XML
 {
+    public static string XMLNotasCredito(string data)
+    {
+        string xml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" +
+                        "<cfdi:Comprobante " +
+                            "xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\" " +
+                            "xmlns:cfdi = \"http://www.sat.gob.mx/cfd/3\" " +
+                            "xsi:schemaLocation = \"http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd\" " +
+
+                            "Version = \"3.3\" " +
+                            "Serie = \"\" " +
+                            "Folio = \"090146344\" " +
+                            "Fecha = \"2017-05-11T12:56:11\" " +
+                            "LugarExpedicion = \"64102\" " +
+                            "Moneda = \"MXN\" " +
+                            "TipoCambio = \"1\" " +
+                            "CondicionesDePago=\"Para la fecha de 18/07/2017\" " +
+
+                            "FormaPago=\"01\" " +
+                            "MetodoPago = \"PUE\" " +
+                            "TipoDeComprobante = \"E\" " +
+
+                            "SubTotal = \"25.00\" " +
+                            "Total = \"29.00\" " +
+
+                            "NoCertificado = \"20001000000300022755\" " +
+                            "Certificado = \"\" " +
+                            "Sello = \"\" >" +
+
+                            "<cfdi:Emisor " +
+                                "Rfc = \"MAG041126GT8\" " +
+                                "Nombre = \"GAsercom DEMO NOTA CREDITO\" " +
+                                "RegimenFiscal = \"601\" />" +
+
+                            "<cfdi:Receptor " +
+                                "Rfc = \"PUUJ841226AF5\" " +
+                                "Nombre = \"FERNANDO ESPINO\" " +
+                                "UsoCFDI = \"G03\" />" +
+
+                            "<cfdi:Conceptos >" +
+                                "<cfdi:Concepto " +
+                                    "ClaveProdServ = \"84111506\" " +
+                                    "Cantidad = \"1\" " +
+                                    "Unidad = \"Pieza\" " +
+                                    "ClaveUnidad = \"ACT\" " +
+                                    "Descripcion = \"Nota Credito\" " +
+                                    "ValorUnitario = \"25.00\" " +
+                                    "Importe = \"25.00\" >" +
+
+                                    "<cfdi:Impuestos >" +
+                                        "<cfdi:Traslados >" +
+                                            "<cfdi:Traslado " +
+                                                "Base = \"25.00\" " +
+                                                "Impuesto = \"002\" " +
+                                                "TipoFactor = \"Tasa\" " +
+                                                "TasaOCuota = \"0.160000\" " +
+                                                "Importe = \"4.00\" />" +
+                                        "</cfdi:Traslados >" +
+                                    "</cfdi:Impuestos >" +
+
+                                "</cfdi:Concepto >" +
+                            "</cfdi:Conceptos >" +
+
+                            "<cfdi:Impuestos TotalImpuestosTrasladados = \"4.00\" >" +
+                                "<cfdi:Traslados >" +
+                                    "<cfdi:Traslado " +
+                                        "Impuesto = \"002\" " +
+                                        "TipoFactor = \"Tasa\" " +
+                                        "TasaOCuota = \"0.160000\" " +
+                                        "Importe = \"4.00\" />" +
+                                "</cfdi:Traslados >" +
+                            "</cfdi:Impuestos >" +
+                        "</cfdi:Comprobante >";
+
+        string encode = Base64Encode(xml);
+
+        return encode;
+    }
+
 
     public static string XMLPagos(string data)
     {

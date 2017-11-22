@@ -21,9 +21,10 @@ public partial class Inicio : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string NotaCredito()
+    public static string NotaCredito(string data)
     {
-        return "";
+        string xml = XML.XMLNotasCredito(data);
+        return Conector.NotaCredito(xml);
     }
 
     [WebMethod]
