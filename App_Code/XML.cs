@@ -33,6 +33,14 @@ public class XML
                             "Certificado = \"\" " +
                             "Sello = \"\" >" +
 
+                            "<cfdi:CfdiRelacionados " +
+                                "TipoRelacion = \"01\" >" +
+                                
+                                "<cfdi:CfdiRelacionado " + 
+                                    "UUID = \"00000000-0000-0000-0000-000000000000\" />" +
+
+                            "</cfdi:CfdiRelacionados > " +
+
                             "<cfdi:Emisor " +
                                 "Rfc = \"MAG041126GT8\" " +
                                 "Nombre = \"GAsercom DEMO NOTA CREDITO\" " +
@@ -47,9 +55,9 @@ public class XML
                                 "<cfdi:Concepto " +
                                     "ClaveProdServ = \"84111506\" " +
                                     "Cantidad = \"1\" " +
-                                    "Unidad = \"Pieza\" " +
+                                    "Unidad = \"ACT\" " +
                                     "ClaveUnidad = \"ACT\" " +
-                                    "Descripcion = \"Nota Credito\" " +
+                                    "Descripcion = \"Servicios de Facturación\" " +
                                     "ValorUnitario = \"25.00\" " +
                                     "Importe = \"25.00\" >" +
 
