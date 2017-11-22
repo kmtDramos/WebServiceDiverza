@@ -14,8 +14,78 @@ using Newtonsoft.Json.Linq;
 public class Conector
 {
 
+    public static string Cancelar(string uuid)
+    {
+        //Cancel
+        string jsoncPost = "{" +
+                               "\"credentials\": {" +
+                                       "\"id\": \"94327\"," +
+                                       "\"token\": \"$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq\"" +
+                               "}," +
+                               "\"issuer\": {" +
+                                       "\"rfc\": \"MAG041126GT8\"" +
+                               "}," +
+                               "\"document\": {" +
+                                       "\"certificate-number\": \"20001000000300022755\"" +
+                               "}" +
+                           "}";
+
+        string Uric = "https://serviciosdemo.diverza.com/api/v1/docuemnts/"+uuid+"/cancel";
+
+        string contents = "";
+        contents = DownloadPageAsync(Uric, jsoncPost, "PUT");
+
+        return contents;
+    }
+
+    public static string NotaCredito()
+    {
+        return "";
+    }
+
+    public static string Pago(String encodeXML)
+    {
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
+        
+        string jsonPost = "{" +
+                                "\"credentials\":  {" +
+                                    "\"id\": \"94327\"," +
+                                     "\"token\": \"$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq\"" +
+
+                                "}," +
+                                "\"issuer\": {" +
+                                    "\"rfc\": \"MAG041126GT8\"" +
+
+                                "}," +
+                                "\"receiver\": {" +
+                                    "\"emails\":" +
+                                        "[" +
+                                            "{" +
+                                                "\"email\": \"mferna.92@gmail.com\"," +
+                                                 "\"format\": \"xml+pdf\"," +
+                                                 "\"template\": \"letter\"" +
+                                            "}" +
+                                        "]" +
+                                "}," +
+                                "\"document\": {" +
+                                    "\"ref-id\": \"" + DateTime.Now.Ticks.ToString() + "\"," +
+                                    "\"certificate-number\":\"20001000000300022755\"," +
+                                    "\"section\": \"all\"," +
+                                    "\"format\": \"pdf\"," +
+                                    "\"template\": \"letter\"," +
+                                    "\"type\": \"application / vnd.diverza.cfdi_3.3_complemento + xml\"," +
+                                    "\"content\": \"" + encodeXML + "\"" +
+                                "}" +
+                           "}";
+
+        string contents = "";
+        contents = DownloadPageAsync(Uri, jsonPost, "POST");
+
+        return contents;
+    }
+
     //Funcion Conector
-    public static string Connect(string encodeXML)
+    public static string Emitir(string encodeXML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 
@@ -41,7 +111,7 @@ public class Conector
                                 "}," +
                                 "\"document\": {" +
                                     "\"ref-id\": \"" + DateTime.Now.Ticks.ToString() + "\"," +
-                                     "\"certificate-number\":\"20001000000300022755\"," +
+                                    "\"certificate-number\":\"20001000000300022755\"," +
                                     "\"section\": \"all\"," +
                                     "\"format\": \"pdf\"," +
                                     "\"template\": \"letter\"," +
@@ -51,6 +121,7 @@ public class Conector
                            "}";
 
 
+        /*
         JObject json = new JObject();
 
         // credentials
@@ -85,34 +156,21 @@ public class Conector
         document.Add("type", "application/vnd.diverza.cfdi_3.3+xml");
         document.Add("content", encodeXML);
         json.Add("document", document);
-        
-        //Cancel
-        string jsoncPost = "{" +
-                               "\"credentials\": {" +
-                                       "\"id\": \"94327\"," +
-                                       "\"token\": \"$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq\"" +
-                               "}," +
-                               "\"issuer\": {" +
-                                       "\"rfc\": \"MAG041126GT8\"" +
-                               "}," +
-                               "\"document\": {" +
-                                       "\"certificate-number\": \"20001000000300022755\"" +
-                               "}" +
-                           "}";
-        string Uric = "https://serviciosdemo.diverza.com/api/v1/documents/9196d619-8d8a-48b6-a160-9bc1ce414d7b/cancel";
+        */
+       
 
         string contents = "";
-        contents = DownloadPageAsync(Uric,jsoncPost);
+        contents = DownloadPageAsync(Uri,jsonPost, "POST");
         
         return contents;
     }
-    public static string DownloadPageAsync(string page, string post)
+    public static string DownloadPageAsync(string page, string post, string method)
     {
         var data = Encoding.ASCII.GetBytes(post); 
 
         var httpWebRequest = (HttpWebRequest)WebRequest.Create(page);
         httpWebRequest.ContentType = "application/json; charset=UTF-8";
-        httpWebRequest.Method = "PUT";//"POST";
+        httpWebRequest.Method = method;
         httpWebRequest.ContentLength = data.Length;
 
         using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))

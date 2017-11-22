@@ -7,8 +7,29 @@ public partial class Inicio : System.Web.UI.Page
 {
     //Manda llamar al Conector del WebService Diverza
     [WebMethod]
-    public static string LoadWeb(string data)
+    public static string Emitir(string data)
     {
-        return Conector.Connect(data); 
+        string xml = XML.XMLEmitir(data);
+        return Conector.Emitir(xml); 
+    }
+
+    [WebMethod]
+    public static string Cancelar(string uuid)
+    {
+        return Conector.Cancelar(uuid);
+
+    }
+
+    [WebMethod]
+    public static string NotaCredito()
+    {
+        return "";
+    }
+
+    [WebMethod]
+    public static string Pago(string data)
+    {
+        string xml = XML.XMLPagos(data);
+        return Conector.Pago(xml);
     }
 }
