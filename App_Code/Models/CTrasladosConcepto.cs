@@ -6,12 +6,12 @@ using System.Web;
 public class CTrasladosConcepto
 {
 
-	private CTrasladoConcepto[] traslados;
+	private CTrasladoConcepto traslado;
 
-	public CTrasladoConcepto[] Traslados
+	public CTrasladoConcepto Traslado
 	{
-		get { return traslados; }
-		set { traslados = value; }
+		get { return traslado; }
+		set { traslado = value; }
 	}
 
 	public CTrasladosConcepto()
@@ -22,12 +22,7 @@ public class CTrasladosConcepto
 	public JObject Validar ()
 	{
 		JObject Error = new JObject();
-		int i = 0;
-		foreach (CTrasladoConcepto traslado in traslados)
-		{
-			Error.Add("Traslado["+i+"]",traslado.Validar());
-			i++;
-		}
+		Error.Add("Traslado",traslado.Validar());
 		return Error;
 	}
 

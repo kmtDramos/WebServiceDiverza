@@ -6,9 +6,9 @@ using System.Web;
 public class CTrasladosComprobante
 {
 
-	private CTrasladoComprobante[] traslado;
+	private CTrasladoComprobante traslado;
 
-	public CTrasladoComprobante[] Traslado
+	public CTrasladoComprobante Traslado
 	{
 		get { return traslado; }
 		set { traslado = value; }
@@ -17,6 +17,12 @@ public class CTrasladosComprobante
 	public CTrasladosComprobante()
 	{
 
+	}
+
+	public JObject Validar ()
+	{
+		JObject Error = new JObject();
+		return Error;
 	}
 
 }

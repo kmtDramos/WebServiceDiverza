@@ -19,4 +19,11 @@ public class CTrasladoComprobante
 
 	}
 
+	public JObject Validar ()
+	{
+		JObject Error = new JObject();
+		Error.Add("Contenido", contendio.Validar());
+		return Error;
+	}
+
 }

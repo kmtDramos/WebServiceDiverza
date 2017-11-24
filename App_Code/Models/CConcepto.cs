@@ -11,7 +11,7 @@ public class CConcepto
 	private string descripcion = "";
 	private decimal cantidad = 0;
 	private string claveprodserv = "";
-	private CImpuestoConcepto impuesto = new CImpuestoConcepto();
+	private CImpuestoConcepto impuestos = new CImpuestoConcepto();
 
 	public decimal Importe
 	{
@@ -43,10 +43,10 @@ public class CConcepto
 		set { claveprodserv = value; }
 	}
 
-	public CImpuestoConcepto Impuesto
+	public CImpuestoConcepto Impuestos
 	{
-		get { return impuesto; }
-		set { impuesto = value; }
+		get { return impuestos; }
+		set { impuestos = value; }
 	}
 
 	public CConcepto()

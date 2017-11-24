@@ -21,12 +21,13 @@ public class CComprobante
 	private string moneda = "";
 	private decimal total = 0;
 	private string tipodecomprobante = "";
+	private string metodopago = "";
 	private string lugarexpedicion = "";
 	private string sello = "";
 	private CEmisor emisor = new CEmisor();
 	private CReceptor receptor = new CReceptor();
-	private CConcepto[] conceptos = { };
-	private CImpuestoComprobante impuesto = new CImpuestoComprobante();
+	private CConcepto[] conceptos;
+	private CImpuestoComprobante impuestos = new CImpuestoComprobante();
 
 	// Propiedades utilitarias
 	private string error = "";
@@ -64,6 +65,12 @@ public class CComprobante
 		set { nocertificado = value; }
 	}
 
+	public string Certificado
+	{
+		get { return certificado; }
+		set { certificado = value; }
+	}
+
 	public decimal Subtotal
 	{
 		get { return subtotal; }
@@ -92,6 +99,12 @@ public class CComprobante
 	{
 		get { return tipodecomprobante; }
 		set { tipodecomprobante = value; }
+	}
+
+	public string MetodoPago
+	{
+		get { return metodopago; }
+		set { metodopago = value; }
 	}
 
 	public string LugarExpedicion
@@ -124,10 +137,10 @@ public class CComprobante
 		set { conceptos = value; }
 	}
 
-	public CImpuestoComprobante Impuesto
+	public CImpuestoComprobante Impuestos
 	{
-		get { return impuesto; }
-		set { impuesto = value; }
+		get { return impuestos; }
+		set { impuestos = value; }
 	}
 
 	// Getters y Setters utilitarios
@@ -154,33 +167,31 @@ public class CComprobante
 	// Funciones
 	public void Validar()
 	{
-		JObject Error = new JObject();
-
 		JObject validacion = new JObject();
 
-		if (serie == "") validacion.Add("Serie", "");
-		if (fecha == default(DateTime)) validacion.Add("Fecha", "");
-		if (fechapago == default(DateTime)) validacion.Add("FechaPago", "");
-		if (condiciondepago == "") validacion.Add("CondicionDePago", "");
-		if (subtotal == 0) validacion.Add("Subtotal", "");
-		if (tipocambio == 0) validacion.Add("TipoCambio", "");
-		if (moneda == "") validacion.Add("Mondea", "");
-		if (total == 0) validacion.Add("Total", "");
-		if (tipodecomprobante == "") validacion.Add("TipoDeComprobante", "");
-		if (lugarexpedicion == "") validacion.Add("LugarExpedicion", "");
-		if (emisor.Nombre == "") validacion.Add("EmisorNombre", "");
-		if (emisor.RFC == "") validacion.Add("EmisorRFC", "");
-		if (emisor.RegimenFiscal == "") validacion.Add("EmisorRegimenFiscal", "");
-		if (receptor.Nombre == "") validacion.Add("ReceptroNombre", "");
-		if (receptor.RFC == "") validacion.Add("ReceptorRFC", "");
-		if (receptor.UsoCFDI == "") validacion.Add("ReceptorUsoCFDI", "");
+		if (serie == "") validacion.Add("Serie", "La serie no se ha definido");
+		if (fecha == default(DateTime)) validacion.Add("Fecha", "La fecha no se ha definido");
+		if (fechapago == default(DateTime)) validacion.Add("FechaPago", "La fecha de pago no se ha definido");
+		if (condiciondepago == "") validacion.Add("CondicionDePago", "La condicion de pago no se ha definido");
+		if (subtotal == 0) validacion.Add("Subtotal", "El subtotal no se ha definido");
+		if (tipocambio == 0) validacion.Add("TipoCambio", "El tipo de cambio no se ha definido");
+		if (moneda == "") validacion.Add("Mondea", "La moneda no se ha definido");
+		if (total == 0) validacion.Add("Total", "El total no se ha definido");
+		if (metodopago == "") validacion.Add("MetodoPago", "El método de pago no se ha definido");
+		if (lugarexpedicion == "") validacion.Add("LugarExpedicion", "El lugar de expedicion no se ha definido");
+		if (emisor.Nombre == "") validacion.Add("EmisorNombre", "El nombre del emisor no se ha definido");
+		if (emisor.RFC == "") validacion.Add("EmisorRFC", "El RFC del emisor no se ha definido");
+		if (emisor.RegimenFiscal == "") validacion.Add("EmisorRegimenFiscal", "El regimen fiscal del emisor no se ha definido");
+		if (receptor.Nombre == "") validacion.Add("ReceptroNombre", "El nombre del receptor no se ha definido");
+		if (receptor.RFC == "") validacion.Add("ReceptorRFC", "El RFC del receptor no se ha definido");
+		if (receptor.UsoCFDI == "") validacion.Add("ReceptorUsoCFDI", "El uso de CFDI no se ha definido");
 		int i = 0;
 		foreach (CConcepto concepto in conceptos)
 		{
 			validacion.Add("Concepto["+ i +"]", concepto.Validar());
 			i++;
 		}
-		validacion.Add("Impuesto", impuesto.Validar());
+		validacion.Add("Impuesto", impuestos.Validar());
 
 		error = validacion.ToString();
 	}

@@ -50,7 +50,7 @@ public class JObject
 	override public string ToString()
 	{
 		string json = JSON.Stringify(obj);
-		json = json.Replace(@"\","");
+		json = json.Replace(@"\", "");
 		return json;
 	}
 

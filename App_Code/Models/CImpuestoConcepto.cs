@@ -6,7 +6,7 @@ using System.Web;
 public class CImpuestoConcepto
 {
 
-	private CTrasladosConcepto[] traslados = { };
+	private CTrasladosConcepto[] traslados;
 
 	public CTrasladosConcepto[] Traslados
 	{

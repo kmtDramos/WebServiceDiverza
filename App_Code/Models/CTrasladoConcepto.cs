@@ -22,7 +22,6 @@ public class CTrasladoConcepto
 	public JObject Validar ()
 	{
 		JObject Error = new JObject();
-		Error.Add("Traslado", contenido.Validar());
 		return Error;
 	}
 

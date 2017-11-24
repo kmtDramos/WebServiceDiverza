@@ -26,4 +26,16 @@ public class CImpuestoComprobante
 
 	}
 
+	public JObject Validar ()
+	{
+		JObject Error = new JObject();
+		if (totalimpuestostrasladados == 0) Error.Add("TotalImpuestosTraslados", "El total de impuestos trasladados no esta definido.");
+		int i = 0;
+		foreach (CTrasladosComprobante traslado in traslados)
+		{
+			Error.Add("Traslado[" + i + "]", traslado.Validar());
+		}
+		return Error;
+	}
+
 }

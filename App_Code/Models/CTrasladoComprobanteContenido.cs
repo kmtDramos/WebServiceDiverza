@@ -40,4 +40,14 @@ public class CTrasladoComprobanteContenido
 
 	}
 
+	public JObject Validar ()
+	{
+		JObject Error = new JObject();
+		if (impuesto == "") Error.Add("Impuresto", "El impuesto no esta definido");
+		if (tipofactor == "") Error.Add("TipoFactor", "El tipo de factor no esta definido");
+		if (tasaocuota == 0) Error.Add("TasaOCuota", "La tasa o cuota no esta definida");
+		if (importe == 0) Error.Add("Importe", "El importe no esta definido");
+		return Error;
+	}
+
 }
