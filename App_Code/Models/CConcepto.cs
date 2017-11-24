@@ -10,6 +10,7 @@ public class CConcepto
 	private decimal valorunitario = 0;
 	private string descripcion = "";
 	private decimal cantidad = 0;
+	private string claveunidad = "";
 	private string claveprodserv = "";
 	private CImpuestoConcepto impuestos = new CImpuestoConcepto();
 
@@ -37,6 +38,12 @@ public class CConcepto
 		set { cantidad = value; }
 	}
 
+	public string ClaveUnidad
+	{
+		get { return claveunidad; }
+		set { claveunidad = value; }
+	}
+
 	public string ClaveProdServ
 	{
 		get { return claveprodserv; }
@@ -57,12 +64,6 @@ public class CConcepto
 	public JObject Validar()
 	{
 		JObject Error = new JObject();
-		if (importe == 0) Error.Add("Importe","");
-		if (valorunitario == 0) Error.Add("ValorUnitario", "");
-		if (descripcion == "") Error.Add("Descripcion", "");
-		if (cantidad == 0) Error.Add("Cantidad", "");
-		if (claveprodserv == "") Error.Add("ClaveProdServ", "");
-		Error.Add("Impuesto", impuesto);
 		return Error;
 	}
 

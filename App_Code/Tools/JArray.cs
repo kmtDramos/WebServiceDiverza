@@ -51,7 +51,10 @@ public class JArray : JConvert
 	override public string ToString()
 	{
 		string json = JSON.Stringify(array);
+		json = json.Replace(@"\n\r", "");
 		json = json.Replace(@"\", "");
+		json = json.Replace(@"u003c", "<");
+		json = json.Replace(@"u003e", ">");
 		return json;
 	}
 

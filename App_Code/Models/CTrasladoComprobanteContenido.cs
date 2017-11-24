@@ -11,7 +11,7 @@ public class CTrasladoComprobanteContenido
 	private decimal tasaocuota = 0;
 	private decimal importe = 0;
 
-	public string Impuresto
+	public string Impuesto
 	{
 		get { return impuesto; }
 		set { impuesto = value; }

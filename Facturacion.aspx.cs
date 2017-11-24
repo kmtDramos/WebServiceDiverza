@@ -27,8 +27,8 @@ public partial class Facturacion : System.Web.UI.Page
 			CComprobante comprobante = new CComprobante();
 
 			comprobante.Serie = Convert.ToString(Comprobante["Serie"]);
-			comprobante.Fecha = DateTime.Parse(Comprobante["Fecha"].ToString(), null, System.Globalization.DateTimeStyles.RoundtripKind);
-			comprobante.FechaPago = DateTime.Parse(Comprobante["FechaPago"].ToString(), null, System.Globalization.DateTimeStyles.RoundtripKind);
+			comprobante.Fecha = Comprobante["Fecha"].ToString();
+			comprobante.FechaPago = Comprobante["FechaPago"].ToString();
 			comprobante.CondicionDePago = Convert.ToString(Comprobante["CondicionDePago"]);
 			comprobante.NoCertificado = Convert.ToString(Comprobante["NoCertificado"]);
 			comprobante.Certificado = Convert.ToString(Comprobante["Certificado"]);
@@ -41,6 +41,17 @@ public partial class Facturacion : System.Web.UI.Page
 			comprobante.LugarExpedicion = Convert.ToString(Comprobante["LugarExpedicion"]);
 			comprobante.Sello = Convert.ToString(Comprobante["Sello"]);
 
+			Dictionary<string, object> Emisor = (Dictionary<string, object>)Comprobante["Emisor"];
+			Dictionary<string, object> Receptor = (Dictionary<string, object>)Comprobante["Receptor"];
+
+			comprobante.Emisor.Nombre = Convert.ToString(Emisor["Nombre"]);
+			comprobante.Emisor.RFC = Convert.ToString(Emisor["RFC"]);
+			comprobante.Emisor.RegimenFiscal = Convert.ToString(Emisor["RegimenFiscal"]);
+
+			comprobante.Receptor.Nombre = Convert.ToString(Receptor["Nombre"]);
+			comprobante.Receptor.RFC = Convert.ToString(Receptor["RFC"]);
+			comprobante.Receptor.UsoCFDI = Convert.ToString(Receptor["UsoCFDI"]);
+
 			Object[] Conceptos = (Object[]) Comprobante["Conceptos"];
 
 			if (Conceptos.Length > 0)
@@ -52,20 +63,35 @@ public partial class Facturacion : System.Web.UI.Page
 				{
 					Dictionary<string, object> Impuestos = (Dictionary<string, object>)Concepto["Impuestos"];
 					Object[] Traslados = (Object[])Impuestos["Traslados"];
-					Dictionary<string, object> Traslado = (Dictionary<string, object>)Traslados[0];
-					Dictionary<string, object> Contenido = (Dictionary<string, object>)Traslado["Traslado"];
 
 					CImpuestoConcepto impuestos = new CImpuestoConcepto();
 					CTrasladosConcepto[] traslados = new CTrasladosConcepto[Traslados.Length];
-					CTrasladoConcepto traslado = new CTrasladoConcepto();
-					CTrasladoConceptoContenido contenido = new CTrasladoConceptoContenido();
-					traslado.Contenido = contenido;
+
+					int j = 0;
+					foreach (Dictionary<string, object> Traslado in Traslados)
+					{
+						Dictionary<string, object> Contenido = (Dictionary<string, object>)Traslado["Traslado"];
+						CTrasladoConcepto traslado = new CTrasladoConcepto();
+						CTrasladoConceptoContenido contenido = new CTrasladoConceptoContenido();
+						contenido.Base = Convert.ToDecimal(Contenido["Base"]);
+						contenido.TipoFactor = Convert.ToString(Contenido["TipoFactor"]);
+						contenido.TasaOCuota = Convert.ToDecimal(Contenido["TasaOCuota"]);
+						contenido.Impuesto = Convert.ToString(Contenido["Impuesto"]);
+						contenido.Importe = Convert.ToDecimal(Contenido["Importe"]);
+						traslado.Contenido = contenido;
+						traslados[j] = new CTrasladosConcepto {
+							Traslado = traslado
+						};
+					}
+
+					impuestos.Traslados = traslados;
 
 					conceptos[i] = new CConcepto {
 						Importe = Convert.ToDecimal(Concepto["Importe"]),
 						ValorUnitario = Convert.ToDecimal(Concepto["ValorUnitario"]),
 						Descripcion = Convert.ToString(Concepto["Descripcion"]),
 						Cantidad = Convert.ToDecimal(Concepto["Cantidad"]),
+						ClaveUnidad = Convert.ToString(Concepto["ClaveUnidad"]),
 						ClaveProdServ = Convert.ToString(Concepto["ClaveProdServ"]),
 						Impuestos = impuestos
 					};
@@ -75,12 +101,6 @@ public partial class Facturacion : System.Web.UI.Page
 					conceptos[i].Descripcion = Convert.ToString(Concepto["Descripcion"]);
 					conceptos[i].Cantidad = Convert.ToDecimal(Concepto["Cantidad"]);
 					conceptos[i].ClaveProdServ = Convert.ToString(Concepto["ClaveProdServ"]);
-
-					conceptos[i].Impuesto.Traslados[0].Traslado.Contenido.Base = Convert.ToDecimal(Traslado["Base"]);
-					conceptos[i].Impuesto.Traslados[0].Traslado.Contenido.TipoFactor = Convert.ToString(Traslado["TipoFactor"]);
-					conceptos[i].Impuesto.Traslados[0].Traslado.Contenido.TasaOCuota = Convert.ToDecimal(Traslado["TasaOCuota"]);
-					conceptos[i].Impuesto.Traslados[0].Traslado.Contenido.Impuesto = Convert.ToString(Traslado["Impuesto"]);
-					conceptos[i].Impuesto.Traslados[0].Traslado.Contenido.Importe = Convert.ToDecimal(Traslado["Importe"]);
 					
 					i++;
 				}
@@ -93,16 +113,30 @@ public partial class Facturacion : System.Web.UI.Page
 
 			Dictionary<string, object> ImpuestosGlobales = (Dictionary<string, object>) Comprobante["Impuestos"];
 			Object[] TrasladosGlobales = (Object[]) ImpuestosGlobales["Traslados"];
-			Dictionary<string, object> TrasladoGlobal = (Dictionary<string, object>) TrasladosGlobales[0];
-			Dictionary<string, object> ContenidoTrasladoGlobal = (Dictionary<string, object>) TrasladoGlobal["Traslado"];
 			
-			comprobante.Impuestos.TotalImpuestosTraslados = Convert.ToDecimal(TrasladoGlobal["TotalImpuestosTraslados"]);
-			comprobante.Impuestos.Traslados[0].Traslado.Contenido.Impuresto = Convert.ToString(ContenidoTrasladoGlobal["Impuesto"]);
-			comprobante.Impuestos.Traslados[0].Traslado.Contenido.TipoFactor = Convert.ToString(ContenidoTrasladoGlobal["TipoFactor"]);
-			comprobante.Impuestos.Traslados[0].Traslado.Contenido.TasaOCuota = Convert.ToDecimal(ContenidoTrasladoGlobal["TasaOCuota"]);
-			comprobante.Impuestos.Traslados[0].Traslado.Contenido.Importe = Convert.ToDecimal(ContenidoTrasladoGlobal["Importe"]);
+			comprobante.Impuestos.TotalImpuestosTraslados = Convert.ToDecimal(ImpuestosGlobales["TotalImpuestosTrasladados"]);
 
-			Respuesta.Add("Comprobante", comprobante);
+			CTrasladosComprobante[] trasladosglobales = new CTrasladosComprobante[TrasladosGlobales.Length];
+
+			int h = 0;
+			foreach (Dictionary<string, object> TrasladoGlobal in TrasladosGlobales)
+			{
+				Dictionary<string, object> ContenidoTrasladoGlobal = (Dictionary<string, object>)TrasladoGlobal["Traslado"];
+				CTrasladoComprobante traslado = new CTrasladoComprobante();
+				CTrasladoComprobanteContenido contenido = new CTrasladoComprobanteContenido();
+				contenido.Importe = Convert.ToDecimal(ContenidoTrasladoGlobal["Importe"]);
+				contenido.Impuesto = Convert.ToString(ContenidoTrasladoGlobal["Impuesto"]);
+				contenido.TasaOCuota = Convert.ToDecimal(ContenidoTrasladoGlobal["TasaOCuota"]);
+				contenido.TipoFactor = Convert.ToString(ContenidoTrasladoGlobal["TipoFactor"]);
+				traslado.Contenido = contenido;
+				trasladosglobales[h] = new CTrasladosComprobante { Traslado = traslado };
+			}
+
+			comprobante.Impuestos.Traslados = trasladosglobales;
+
+			string xml = FacturacionXML.XML(comprobante);
+
+			Respuesta.Add("XML", xml);
 
 		}
 		catch (Exception ex)
