@@ -119,7 +119,7 @@ public class Conector
         return contents;
     }
     
-    public static string Emitir(int Id, string Token, string RefId, string encodeXML)
+    public static string Emitir(int Id, string Token, string rfc, string RefId,List<string> correos, string encodeXML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 
@@ -127,25 +127,15 @@ public class Conector
                                 "\"credentials\":  {" +
                                     "\"id\": \"" + Id + "\"," +
                                      "\"token\": \"" + Token + "\"" +
-
                                 "}," +
                                 "\"issuer\": {" +
-                                    "\"rfc\": \"MAG041126GT8\"" +
+                                    "\"rfc\": \""+ rfc +"\"" +
 
                                 "}," +
-                                "\"receiver\": {" +
-                                    "\"emails\":" +
-                                        "[" +
-                                            "{" +
-                                                "\"email\": \"mferna.92@gmail.com\"," +
-                                                 "\"format\": \"xml+pdf\"," +
-                                                 "\"template\": \"letter\"" +
-                                            "}" +
-                                        "]" +
-                                "}," +
+                                "\"receiver\": {" + Receivers(correos) + "}," +
                                 "\"document\": {" +
                                     "\"ref-id\": \"" + RefId + "\"," +
-                                    "\"certificate-number\":\"20001000000300022755\"," +
+									"\"certificate-number\":\"" + RefId + "\"," +
                                     "\"section\": \"all\"," +
                                     "\"format\": \"pdf\"," +
                                     "\"template\": \"letter\"," +
@@ -159,6 +149,20 @@ public class Conector
 		contents = (contents == "") ? jsonPost : contents;
         return contents;
     }
+
+	public static string Receivers (List<string> correos)
+	{
+		string receivers = "";
+
+		foreach(string correo in correos)
+		{
+			receivers = "{\"email\":\"" + correo + "\", \"format\":\"xml+pdf\", \"template\":\"letter\"}";
+		}
+
+		receivers = "\"emails\":[" + receivers + "]";
+
+		return receivers;
+	}
 
     public static string DownloadPageAsync(string page, string post, string method)
     {

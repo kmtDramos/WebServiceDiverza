@@ -10,7 +10,7 @@ public partial class Facturacion : System.Web.UI.Page
 {
 
 	[WebMethod]
-	public static string TimbrarFactura(Dictionary<string, object> Comprobante)
+	public static string TimbrarFactura(Dictionary<string, object> Comprobante, string RFC, string RefID, string Correos )
 	{
 		JObject Respuesta = new JObject();
 
@@ -28,13 +28,11 @@ public partial class Facturacion : System.Web.UI.Page
 		}
 
 		xml = FacturacionXML.XML(comprobante);
+		System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC);
+		System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC + @"\" + RefID + ".xml", xml);
 		string encode = Base64.Encode(xml);
-		Respuesta.Add("Timbrado", Conector.Emitir(94327, "$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq", DateTime.Now.Ticks.ToString(), encode));
-
-		Respuesta.Add("Error", Error);
-		Respuesta.Add("Descripcion", DescripcionError);
-
-		return Respuesta.ToString();
+		string timbrado = Conector.Emitir(94327, "$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq", RFC, RefID, Correos.Split(',').ToList(), encode);
+		return timbrado;
 	}
 
 	private static CComprobante GenerarComprobante (Dictionary<string, object> Comprobante)
@@ -43,6 +41,7 @@ public partial class Facturacion : System.Web.UI.Page
 		CComprobante comprobante = new CComprobante();
 
 		comprobante.Serie = Convert.ToString(Comprobante["Serie"]);
+		comprobante.Folio = Convert.ToString(Comprobante["Folio"]);
 		comprobante.Fecha = Comprobante["Fecha"].ToString();
 		comprobante.FormaPago = Comprobante["FormaPago"].ToString();
 		comprobante.CondicionDePago = Convert.ToString(Comprobante["CondicionDePago"]);

@@ -8,6 +8,7 @@ public class CConcepto
 
 	private decimal importe = 0;
 	private decimal valorunitario = 0;
+	private string unidad = "unidad";
 	private string descripcion = "";
 	private decimal cantidad = 0;
 	private string claveunidad = "";
@@ -24,6 +25,12 @@ public class CConcepto
 	{
 		get { return valorunitario; }
 		set { valorunitario = value; }
+	}
+
+	public string Unidad
+	{
+		get { return unidad; }
+		set { unidad = value; }
 	}
 
 	public string Descripcion
