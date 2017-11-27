@@ -12,7 +12,7 @@ public class CComprobante
 	// Propiedades default
 	private string serie = "";
 	private DateTime fecha = default(DateTime);
-	private DateTime fechapago = default(DateTime);
+	private string formapago = "";
 	private string condiciondepago = "";
 	private string nocertificado = "";
 	private string certificado = "";
@@ -47,10 +47,10 @@ public class CComprobante
 		set { fecha = DateTime.Parse(value, null, System.Globalization.DateTimeStyles.RoundtripKind); }
 	}
 
-	public string FechaPago
+	public string FormaPago
 	{
-		get { return fechapago.ToString("o").Substring(0, 19); }
-		set { fechapago = DateTime.Parse(value, null, System.Globalization.DateTimeStyles.RoundtripKind); }
+		get { return formapago; }
+		set { formapago = value; }
 	}
 
 	public string CondicionDePago

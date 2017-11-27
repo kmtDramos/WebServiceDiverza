@@ -119,14 +119,14 @@ public class Conector
         return contents;
     }
     
-    public static string Emitir(string encodeXML)
+    public static string Emitir(int Id, string Token, string RefId, string encodeXML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 
         string jsonPost = "{" +
                                 "\"credentials\":  {" +
-                                    "\"id\": \"94327\"," +
-                                     "\"token\": \"$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq\"" +
+                                    "\"id\": \"" + Id + "\"," +
+                                     "\"token\": \"" + Token + "\"" +
 
                                 "}," +
                                 "\"issuer\": {" +
@@ -144,7 +144,7 @@ public class Conector
                                         "]" +
                                 "}," +
                                 "\"document\": {" +
-                                    "\"ref-id\": \"" + DateTime.Now.Ticks.ToString() + "\"," +
+                                    "\"ref-id\": \"" + RefId + "\"," +
                                     "\"certificate-number\":\"20001000000300022755\"," +
                                     "\"section\": \"all\"," +
                                     "\"format\": \"pdf\"," +
@@ -155,12 +155,14 @@ public class Conector
                            "}";
 		
         string contents = "";
-        contents = DownloadPageAsync(Uri,jsonPost, "POST");
-        
+        contents = DownloadPageAsync(Uri, jsonPost, "POST");
+		contents = (contents == "") ? jsonPost : contents;
         return contents;
     }
+
     public static string DownloadPageAsync(string page, string post, string method)
     {
+		string r = "";
         var data = Encoding.ASCII.GetBytes(post); 
 
         var httpWebRequest = (HttpWebRequest)WebRequest.Create(page);
@@ -173,7 +175,6 @@ public class Conector
             streamWriter.Write(post);
             streamWriter.Close();
         }
-        string r = "NADA";
         try
         {
             var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();

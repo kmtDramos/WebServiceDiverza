@@ -50,9 +50,9 @@ public class JObject
 	override public string ToString()
 	{
 		string json = JSON.Stringify(obj);
-		json = json.Replace(@"\n\r", System.Environment.NewLine);
 		json = json.Replace(@"u003c", "<");
 		json = json.Replace(@"u003e", ">");
+		json = json.Replace(@"\r\n", System.Environment.NewLine);
 		return json;
 	}
 
