@@ -11,6 +11,7 @@ public class CComprobante
 
 	// Propiedades default
 	private string serie = "";
+	private string folio = "";
 	private DateTime fecha = default(DateTime);
 	private string formapago = "";
 	private string condiciondepago = "";
@@ -39,6 +40,12 @@ public class CComprobante
 	{
 		get { return serie; }
 		set { serie = value; }
+	}
+
+	public string Folio
+	{
+		get { return folio; }
+		set { folio = value; }
 	}
 
 	public string Fecha

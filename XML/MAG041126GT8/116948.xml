@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<cfdi:Comprobante
+    Certificado=""
+    NoCertificado="20001000000300022755" FormaPago="01"
+    Sello=""
+    Fecha="2017-11-25T00:00:00"
+    Folio="11191"
+    Serie="ABC"
+    Version="3.3"
+    LugarExpedicion="64380"
+    MetodoPago="PUE"
+    TipoDeComprobante="I"
+    Total="107532"
+    SubTotal="92700"
+    Moneda="MXN"
+    TipoCambio="1"
+    xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd">
+    <cfdi:Emisor
+        Nombre="GRUPO ASERCOM S.A. DE C.V."
+        Rfc="MAG041126GT8"
+        RegimenFiscal="601"/>
+    <cfdi:Receptor
+        Nombre="UNIVERSIDAD AUTONOMA DE NUEVO LEON"
+        Rfc="UAN691126MK2"
+        UsoCFDI="G03"/>
+    <cfdi:Conceptos>
+        <cfdi:Concepto
+            Importe="92700"
+            ValorUnitario="92700"
+            Descripcion="DJI Inspire 2 Drone DJI Inspire 2 Drone. Peso. 3.290, esto limita ópticas que puede ser dimensiones 605mm. diagonal sin elice Autonomía de Vuelo Aprox. 27  con cámara ZEN MUSE X4S, Con Zenmuse X5S. 20 min. temperatura de funcionamiento -10o.a 40oC. Control a través de mando mas uso de dispositivo movile IOS,.Y Android, con la aplicación DJI. Go.4 , Sistema de Visión, Sistema de vision Cámaras FPV. Para modo vision en primera persona extras,Diversos sensores infrarrojos para mejorar posicionamiento y detección de obstáculos. También GPS. Asi como cámaras para un vuelo mas inteligente.
+Orden de compra NO. 2263 Facultad de Ingeniería Civil.    Tiempo de entrega 2 SEMANAS 	
+NO. DE SERIE : OD4JE6SOC20008 Tiempo de entrega 5 DIAS HABILES"
+            Unidad="unidad"
+            ClaveUnidad="XUN"
+            Cantidad="1"
+            ClaveProdServ="01010101">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="92700"
+                        TipoFactor="Tasa"
+                        TasaOCuota="0.160000"
+                        Impuesto="002"
+                        Importe="14832"/>
+                </cfdi:Traslados>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+    </cfdi:Conceptos>
+    <cfdi:Impuestos TotalImpuestosTrasladados="14832">
+        <cfdi:Traslados>
+            <cfdi:Traslado
+                Importe="14832"
+                TipoFactor="Tasa"
+                TasaOCuota="0.160000"
+                Impuesto="002"/>
+        </cfdi:Traslados>
+    </cfdi:Impuestos>
+</cfdi:Comprobante>
