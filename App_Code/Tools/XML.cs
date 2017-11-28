@@ -158,7 +158,7 @@ public class XML
                                             "IdDocumento = \"00000000-0000-0000-0000-000000000000\" " +
                                             "Serie = \"\" " +
                                             "Folio = \"\" " +
-                                            "Moneda = \"MXN\" " +
+                                            "MonedaDR = \"MXN\" " +
                                             "MetodoDePagoDR = \"PPD\" " +
                                             "NumParcialidad = \"1\" " +
                                             "ImpSaldoAnt = \"0.0\" " +
