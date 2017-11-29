@@ -37,35 +37,26 @@ public class Conector
         return contents;
     }
 
-    public static string NotaCredito(string encodeXML)
-    {
+    public static string NotaCredito(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> correos, string encodeXML)
+    { 
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 
         string jsonPost = "{" +
                                 "\"credentials\":  {" +
-                                    "\"id\": \"94327\"," +
-                                     "\"token\": \"$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq\"" +
+                                    "\"id\": \"" + Id + "\"," +
+                                     "\"token\": \"" + Token + "\"" +
 
                                 "}," +
                                 "\"issuer\": {" +
-                                    "\"rfc\": \"MAG041126GT8\"" +
+                                    "\"rfc\": \"" + RFC + "\"" +
 
                                 "}," +
-                                "\"receiver\": {" +
-                                    "\"emails\":" +
-                                        "[" +
-                                            "{" +
-                                                "\"email\": \"mferna.92@gmail.com\"," +
-                                                 "\"format\": \"xml+pdf\"," +
-                                                 "\"template\": \"letter\"" +
-                                            "}" +
-                                        "]" +
-                                "}," +
+                                "\"receiver\": {" + Receivers(correos) + "}," +
                                 "\"document\": {" +
-                                    "\"ref-id\": \"" + DateTime.Now.Ticks.ToString() + "\"," +
-                                    "\"certificate-number\":\"20001000000300022755\"," +
+                                    "\"ref-id\": \"" + RefId + "\"," +
+                                    "\"certificate-number\":\"" + Certificado + "\"," +
                                     "\"section\": \"all\"," +
-                                    "\"format\": \"pdf\"," +
+                                    "\"format\": \"" + Formato + "\"," +
                                     "\"template\": \"letter\"," +
                                     "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
                                     "\"content\": \"" + encodeXML + "\"" +
@@ -73,48 +64,39 @@ public class Conector
                            "}";
 
         string contents = "";
-        contents = DownloadPageAsync(Uri, jsonPost, "POST");
+        contents = Peticion(Uri, jsonPost, "POST");
 
         return contents;
     }
 
-    public static string Pago(string encodeXML)
+    public static string Pago(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> correos, string encodeXML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
         
         string jsonPost = "{" +
                                 "\"credentials\":  {" +
-                                    "\"id\": \"94327\"," +
-                                     "\"token\": \"$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq\"" +
+                                    "\"id\": \"" + Id + "\"," +
+                                     "\"token\": \"" + Token + "\"" +
 
                                 "}," +
                                 "\"issuer\": {" +
-                                    "\"rfc\": \"MAG041126GT8\"" +
+                                    "\"rfc\": \"" + RFC + "\"" +
 
                                 "}," +
-                                "\"receiver\": {" +
-                                    "\"emails\":" +
-                                        "[" +
-                                            "{" +
-                                                "\"email\": \"mferna.92@gmail.com\"," +
-                                                 "\"format\": \"xml+pdf\"," +
-                                                 "\"template\": \"letter\"" +
-                                            "}" +
-                                        "]" +
-                                "}," +
+                                "\"receiver\": {" + Receivers(correos) + "}," +
                                 "\"document\": {" +
-                                    "\"ref-id\": \"" + DateTime.Now.Ticks.ToString() + "\"," +
-                                    "\"certificate-number\":\"20001000000300022755\"," +
+                                    "\"ref-id\": \"" + RefId + "\"," +
+                                    "\"certificate-number\":\"" + Certificado + "\"," +
                                     "\"section\": \"all\"," +
-                                    "\"format\": \"pdf\"," +
+                                    "\"format\": \"" + Formato + "\"," +
                                     "\"template\": \"letter\"," +
-                                    "\"type\": \"application/vnd.diverza.cfdi_3.3_complemento+xml\"," +
+                                    "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
                                     "\"content\": \"" + encodeXML + "\"" +
                                 "}" +
                            "}";
 
         string contents = "";
-        contents = DownloadPageAsync(Uri, jsonPost, "POST");
+        contents = Peticion(Uri, jsonPost, "POST");
 
         return contents;
     }
