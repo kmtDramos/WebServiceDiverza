@@ -14,22 +14,22 @@ using Newtonsoft.Json.Linq;
 public class Conector
 {
 
-    public static string Cancelar(string uuid)
+    public static string Cancelar(string Id, string Token, string UUID, string RFC, string NoCertificado)
     {
         string jsoncPost = "{" +
                                "\"credentials\": {" +
-                                       "\"id\": \"94327\"," +
-                                       "\"token\": \"$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq\"" +
+									   "\"id\": \"" + Id +"\"," +
+									   "\"token\": \"" + Token +"\"" +
                                "}," +
                                "\"issuer\": {" +
-                                       "\"rfc\": \"MAG041126GT8\"" +
+									   "\"rfc\": \"" + RFC +"\"" +
                                "}," +
                                "\"document\": {" +
-                                       "\"certificate-number\": \"20001000000300022755\"" +
+									   "\"certificate-number\": \"" + NoCertificado +"\"" +
                                "}" +
                            "}";
 
-        string Uric = "https://serviciosdemo.diverza.com/api/v1/docuemnts/"+uuid+"/cancel";
+        string Uric = "https://serviciosdemo.diverza.com/api/v1/docuemnts/"+ UUID +"/cancel";
 
         string contents = "";
         contents = DownloadPageAsync(Uric, jsoncPost, "PUT");
@@ -119,7 +119,7 @@ public class Conector
         return contents;
     }
     
-    public static string Emitir(int Id, string Token, string rfc, string RefId,List<string> correos, string encodeXML)
+    public static string Emitir(string Id, string Token, string rfc, string RefId, string Certificado, string Formato, List<string> correos, string encodeXML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 
@@ -135,9 +135,9 @@ public class Conector
                                 "\"receiver\": {" + Receivers(correos) + "}," +
                                 "\"document\": {" +
                                     "\"ref-id\": \"" + RefId + "\"," +
-									"\"certificate-number\":\"" + RefId + "\"," +
+									"\"certificate-number\":\"" + Certificado + "\"," +
                                     "\"section\": \"all\"," +
-                                    "\"format\": \"pdf\"," +
+                                    "\"format\": \""+ Formato + "\"," +
                                     "\"template\": \"letter\"," +
                                     "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
                                     "\"content\": \"" + encodeXML + "\"" +
@@ -146,7 +146,6 @@ public class Conector
 		
         string contents = "";
         contents = DownloadPageAsync(Uri, jsonPost, "POST");
-		contents = (contents == "") ? jsonPost : contents;
         return contents;
     }
 

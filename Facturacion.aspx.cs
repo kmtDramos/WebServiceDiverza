@@ -10,29 +10,27 @@ public partial class Facturacion : System.Web.UI.Page
 {
 
 	[WebMethod]
-	public static string TimbrarFactura(Dictionary<string, object> Comprobante, string RFC, string RefID, string Correos )
+	public static string TimbrarFactura(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos )
 	{
-		JObject Respuesta = new JObject();
-
-		int Error = 0;
-		string DescripcionError = "";
-
 		string xml = "";
 		CComprobante comprobante = new CComprobante(); ;
 
 		try { comprobante = GenerarComprobante(Comprobante); }
 		catch (Exception ex)
-		{
-			Error = 1;
-			DescripcionError = ex.Message + " - " + ex.StackTrace;
-		}
+		{  }
 
 		xml = FacturacionXML.XML(comprobante);
 		System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC);
 		System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC + @"\" + RefID + ".xml", xml);
 		string encode = Base64.Encode(xml);
-		string timbrado = Conector.Emitir(94327, "$2b$12$pj0NTsT/brybD2cJrNa8iuRRE5KoxeEFHcm/yJooiSbiAdbiTGzIq", RFC, RefID, Correos.Split(',').ToList(), encode);
+		string timbrado = Conector.Emitir(Id, Token, RFC, RefID, NoCertificado, Formato, Correos.Split(',').ToList(), encode);
 		return timbrado;
+	}
+
+	[WebMethod]
+	public static string CancelarFactura(string Id, string Token, string UUID, string RFC, string NoCertificado)
+	{
+		return Conector.Cancelar(Id, Token, UUID, RFC, NoCertificado);
 	}
 
 	private static CComprobante GenerarComprobante (Dictionary<string, object> Comprobante)
