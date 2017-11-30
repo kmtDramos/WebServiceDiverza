@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<cfdi:Comprobante
+    Certificado=""
+    NoCertificado="20001000000300022755" FormaPago="01"
+    Sello=""
+    Fecha="2017-11-29T00:00:00"
+    Folio="11211"
+    Serie="ABC"
+    Version="3.3"
+    LugarExpedicion="64380"
+    MetodoPago="PUE"
+    TipoDeComprobante="I"
+    Total="5038.34"
+    SubTotal="4343.4"
+    Moneda="MXN"
+    TipoCambio="1"
+    xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd">
+    <cfdi:Emisor
+        Nombre="GRUPO ASERCOM S.A. DE C.V."
+        Rfc="MAG041126GT8"
+        RegimenFiscal="601"/>
+    <cfdi:Receptor
+        Nombre="PC 2 GH AC"
+        Rfc="PDG150205JW9"
+        UsoCFDI="G03"/>
+    <cfdi:Conceptos>
+        <cfdi:Concepto
+            Importe="4343.4"
+            ValorUnitario="2171.7"
+            Descripcion="RBC48 - APC REPLACEMENT BATTERY CARTRIDGE #48 Tiempo de entrega 3 A 4 SEMANAS"
+            Unidad="unidad"
+            ClaveUnidad="XUN"
+            Cantidad="2"
+            ClaveProdServ="01010101">
+            <cfdi:Impuestos>
+                <cfdi:Traslados>
+                    <cfdi:Traslado Base="4343.4"
+                        TipoFactor="Tasa"
+                        TasaOCuota="0.160000"
+                        Impuesto="002"
+                        Importe="694.94"/>
+                </cfdi:Traslados>
+            </cfdi:Impuestos>
+        </cfdi:Concepto>
+    </cfdi:Conceptos>
+    <cfdi:Impuestos TotalImpuestosTrasladados="694.94">
+        <cfdi:Traslados>
+            <cfdi:Traslado
+                Importe="694.94"
+                TipoFactor="Tasa"
+                TasaOCuota="0.160000"
+                Impuesto="002"/>
+        </cfdi:Traslados>
+    </cfdi:Impuestos>
+</cfdi:Comprobante>

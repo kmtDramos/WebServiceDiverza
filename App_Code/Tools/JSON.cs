@@ -11,4 +11,9 @@ public class JSON
 		return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(Obj);
 	}
 
+	public static object Parse (string json)
+	{
+		return new System.Web.Script.Serialization.JavaScriptSerializer().DeserializeObject(json);
+	}
+
 }

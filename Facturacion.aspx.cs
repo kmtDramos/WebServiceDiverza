@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.Services;
+using System.IO;
+using System.IO.Compression;
 
 public partial class Facturacion : System.Web.UI.Page
 {
@@ -12,19 +14,37 @@ public partial class Facturacion : System.Web.UI.Page
 	[WebMethod]
 	public static string TimbrarFactura(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos )
 	{
-		string xml = "";
+		string Xml = "";
 		CComprobante comprobante = new CComprobante(); ;
 
 		try { comprobante = GenerarComprobante(Comprobante); }
 		catch (Exception ex)
 		{  }
 
-		xml = FacturacionXML.XML(comprobante);
+		Xml = FacturacionXML.XML(comprobante);
 		System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC);
-		System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC + @"\" + RefID + ".xml", xml);
-		string encode = Base64.Encode(xml);
+		System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC + @"\" + RefID + ".xml", Xml);
+		string encode = Base64.Encode(Xml);
 		string timbrado = Conector.Emitir(Id, Token, RFC, RefID, NoCertificado, Formato, Correos.Split(',').ToList(), encode);
-		return timbrado;
+
+		Dictionary<string, object> Data = (Dictionary<string, object>)JSON.Parse(timbrado);
+
+		string uuid = Data["uuid"].ToString();
+		string ref_id = Data["ref_id"].ToString();
+		string content = Data["content"].ToString();
+
+		string contenido = Base64.Decode(content);
+
+		//ZipArchive zip = new ZipArchive(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(contenido)), ZipArchiveMode.Read);
+		//ZipArchiveEntry pdf = zip.GetEntry("invoice.pdf");
+		//ZipArchiveEntry xml = zip.GetEntry("invoice.xml");
+
+		JObject Respuesta = new JObject();
+		Respuesta.Add("uuid", uuid);
+		Respuesta.Add("ref_id", ref_id);
+		Respuesta.Add("content", contenido);
+
+		return Respuesta.ToString();
 	}
 
 	[WebMethod]

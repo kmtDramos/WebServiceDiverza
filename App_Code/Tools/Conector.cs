@@ -32,7 +32,7 @@ public class Conector
         string Uric = "https://serviciosdemo.diverza.com/api/v1/docuemnts/"+ UUID +"/cancel";
 
         string contents = "";
-        contents = DownloadPageAsync(Uric, jsoncPost, "PUT");
+        contents = Peticion(Uric, jsoncPost, "PUT");
 
         return contents;
     }
@@ -101,80 +101,83 @@ public class Conector
         return contents;
     }
     
-    public static string Emitir(string Id, string Token, string rfc, string RefId, string Certificado, string Formato, List<string> correos, string encodeXML)
+    public static string Emitir(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string XML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 
-        string jsonPost = "{" +
-                                "\"credentials\":  {" +
-                                    "\"id\": \"" + Id + "\"," +
-                                     "\"token\": \"" + Token + "\"" +
-                                "}," +
-                                "\"issuer\": {" +
-                                    "\"rfc\": \""+ rfc +"\"" +
+		JObject Request = new JObject();
+		JObject Credenciales = new JObject();
+		JObject Issuer = new JObject();
+		JObject Receivers = new JObject();
+		JObject Document = new JObject();
 
-                                "}," +
-                                "\"receiver\": {" + Receivers(correos) + "}," +
-                                "\"document\": {" +
-                                    "\"ref-id\": \"" + RefId + "\"," +
-									"\"certificate-number\":\"" + Certificado + "\"," +
-                                    "\"section\": \"all\"," +
-                                    "\"format\": \""+ Formato + "\"," +
-                                    "\"template\": \"letter\"," +
-                                    "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
-                                    "\"content\": \"" + encodeXML + "\"" +
-                                "}" +
-                           "}";
-		
-        string contents = "";
-        contents = DownloadPageAsync(Uri, jsonPost, "POST");
-        return contents;
+		Credenciales.Add("id", Id);
+		Credenciales.Add("token", Token);
+
+		Issuer.Add("rfc", RFC);
+
+		Document.Add("ref-id", RefId);
+		Document.Add("certificate-number", Certificado);
+		Document.Add("section", "all");
+		Document.Add("format", Formato);
+		Document.Add("template", "letter");
+		Document.Add("type", "application/vnd.diverza.cfdi_3.3+xml");
+		Document.Add("content", XML);
+
+		Request.Add("credentials", Credenciales);
+		Request.Add("issuer", Issuer);
+		Request.Add("receiver", ObtenerDestinatarios(Correos));
+		Request.Add("document", Document);
+        return Peticion(Uri, Request.ToString(), "POST"); ;
     }
 
-	public static string Receivers (List<string> correos)
+	public static JObject ObtenerDestinatarios (List<string> correos)
 	{
-		string receivers = "";
+		JObject receivers = new JObject();
+
+		JArray emails = new JArray();
 
 		foreach(string correo in correos)
 		{
-			receivers = "{\"email\":\"" + correo + "\", \"format\":\"xml+pdf\", \"template\":\"letter\"}";
+			JObject email = new JObject();
+			email.Add("email", correo);
+			email.Add("format", "xml+pdf");
+			email.Add("template", "letter");
+			emails.Add(email);
 		}
 
-		receivers = "\"emails\":[" + receivers + "]";
-
+		receivers.Add("emails", emails);
+		
 		return receivers;
 	}
 
-    public static string DownloadPageAsync(string page, string post, string method)
+    public static string Peticion(string URI, string Request, string Metodo)
     {
-		string r = "";
-        var data = Encoding.ASCII.GetBytes(post); 
+		string Resultado = "";
 
-        var httpWebRequest = (HttpWebRequest)WebRequest.Create(page);
-        httpWebRequest.ContentType = "application/json; charset=UTF-8";
-        httpWebRequest.Method = method;
-        httpWebRequest.ContentLength = data.Length;
+        var Data = Encoding.ASCII.GetBytes(Request); 
 
-        using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-        {
-            streamWriter.Write(post);
-            streamWriter.Close();
-        }
+        var Consulta = (HttpWebRequest)WebRequest.Create(URI);
+		Consulta.ContentType = "application/json; charset=UTF-8";
+		Consulta.Method = Metodo;
+		Consulta.ContentLength = Data.Length;
+
+		StreamWriter Envio = new StreamWriter(Consulta.GetRequestStream());
+		Envio.Write(Request);
+		Envio.Close();
+
         try
         {
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            {
-                var result = streamReader.ReadToEnd();
-                r = result; 
-            }
+			HttpWebResponse Respuesta = (HttpWebResponse)Consulta.GetResponse();
+			StreamReader Lector = new StreamReader(Respuesta.GetResponseStream());
+			Resultado = Lector.ReadToEnd();
         }
-        catch(WebException wex)
+        catch(WebException ex)
         {
-            var pageContent = new StreamReader(wex.Response.GetResponseStream()).ReadToEnd();
-            r = pageContent;
+            Resultado = new StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
         }
-        return r;
+
+        return Resultado;
         
     }
 
