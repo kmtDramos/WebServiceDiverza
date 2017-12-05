@@ -14,91 +14,106 @@ using Newtonsoft.Json.Linq;
 public class Conector
 {
 
-    public static string Cancelar(string Id, string Token, string UUID, string RFC, string NoCertificado)
+    public static JObject Cancelar(string Id, string Token, string RFC, string Certificado, string UUID)
     {
-        string jsoncPost = "{" +
-                               "\"credentials\": {" +
-									   "\"id\": \"" + Id +"\"," +
-									   "\"token\": \"" + Token +"\"" +
-                               "}," +
-                               "\"issuer\": {" +
-									   "\"rfc\": \"" + RFC +"\"" +
-                               "}," +
-                               "\"document\": {" +
-									   "\"certificate-number\": \"" + NoCertificado +"\"" +
-                               "}" +
-                           "}";
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/docuemnts/" + UUID + "/cancel";
 
-        string Uric = "https://serviciosdemo.diverza.com/api/v1/docuemnts/"+ UUID +"/cancel";
+        JObject Request = new JObject();
+        JObject Credenciales = new JObject();
+        JObject Issuer = new JObject();
+        JObject Document = new JObject();
 
-        string contents = "";
-        contents = Peticion(Uric, jsoncPost, "PUT");
+        Credenciales.Add("id", Id);
+        Credenciales.Add("token", Token);
 
-        return contents;
+        Issuer.Add("rfc", RFC);
+
+        Document.Add("certificate-number", Certificado);
+
+        Request.Add("credentials", Credenciales);
+        Request.Add("issuer", Issuer);
+        Request.Add("document", Document);
+
+        JObject Datos = new JObject();
+
+        Datos.Add("Request", Request);
+        Datos.Add("Response", new JObject().FromString(Peticion(Uri, Request.ToString(), "PUT")));
+
+        return Datos;
     }
 
-    public static string NotaCredito(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> correos, string encodeXML)
-    { 
-        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
-
-        string jsonPost = "{" +
-                                "\"credentials\":  {" +
-                                    "\"id\": \"" + Id + "\"," +
-                                     "\"token\": \"" + Token + "\"" +
-
-                                "}," +
-                                "\"issuer\": {" +
-                                    "\"rfc\": \"" + RFC + "\"" +
-
-                                "}," +
-                                "\"receiver\": {" + Receivers(correos) + "}," +
-                                "\"document\": {" +
-                                    "\"ref-id\": \"" + RefId + "\"," +
-                                    "\"certificate-number\":\"" + Certificado + "\"," +
-                                    "\"section\": \"all\"," +
-                                    "\"format\": \"" + Formato + "\"," +
-                                    "\"template\": \"letter\"," +
-                                    "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
-                                    "\"content\": \"" + encodeXML + "\"" +
-                                "}" +
-                           "}";
-
-        string contents = "";
-        contents = Peticion(Uri, jsonPost, "POST");
-
-        return contents;
-    }
-
-    public static string Pago(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> correos, string encodeXML)
+    public static JObject NotaCredito(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string XML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
-        
-        string jsonPost = "{" +
-                                "\"credentials\":  {" +
-                                    "\"id\": \"" + Id + "\"," +
-                                     "\"token\": \"" + Token + "\"" +
 
-                                "}," +
-                                "\"issuer\": {" +
-                                    "\"rfc\": \"" + RFC + "\"" +
+        JObject Request = new JObject();
+        JObject Credenciales = new JObject();
+        JObject Issuer = new JObject();
+        JObject Receivers = new JObject();
+        JObject Document = new JObject();
 
-                                "}," +
-                                "\"receiver\": {" + Receivers(correos) + "}," +
-                                "\"document\": {" +
-                                    "\"ref-id\": \"" + RefId + "\"," +
-                                    "\"certificate-number\":\"" + Certificado + "\"," +
-                                    "\"section\": \"all\"," +
-                                    "\"format\": \"" + Formato + "\"," +
-                                    "\"template\": \"letter\"," +
-                                    "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
-                                    "\"content\": \"" + encodeXML + "\"" +
-                                "}" +
-                           "}";
+        Credenciales.Add("id", Id);
+        Credenciales.Add("token", Token);
 
-        string contents = "";
-        contents = Peticion(Uri, jsonPost, "POST");
+        Issuer.Add("rfc", RFC);
 
-        return contents;
+        Document.Add("ref-id", RefId);
+        Document.Add("certificate-number", Certificado);
+        Document.Add("section", "all");
+        Document.Add("format", Formato);
+        Document.Add("template", "letter");
+        Document.Add("type", "application/vnd.diverza.cfdi_3.3+xml");
+        Document.Add("content", XML);
+
+        Request.Add("credentials", Credenciales);
+        Request.Add("issuer", Issuer);
+        Request.Add("receiver", ObtenerDestinatarios(Correos));
+        Request.Add("document", Document);
+
+        JObject Datos = new JObject();
+
+        Datos.Add("Request", Request);
+        Datos.Add("Response", new JObject().FromString(Peticion(Uri, Request.ToString(), "POST")));
+
+        return Datos;
+
+    }
+
+    public static JObject Pago(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string XML)
+    {
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
+
+        JObject Request = new JObject();
+        JObject Credenciales = new JObject();
+        JObject Issuer = new JObject();
+        JObject Receivers = new JObject();
+        JObject Document = new JObject();
+
+        Credenciales.Add("id", Id);
+        Credenciales.Add("token", Token);
+
+        Issuer.Add("rfc", RFC);
+
+        Document.Add("ref-id", RefId);
+        Document.Add("certificate-number", Certificado);
+        Document.Add("section", "all");
+        Document.Add("format", Formato);
+        Document.Add("template", "letter");
+        Document.Add("type", "application/vnd.diverza.cfdi_3.3_complemento+xml");
+        Document.Add("content", XML);
+
+        Request.Add("credentials", Credenciales);
+        Request.Add("issuer", Issuer);
+        Request.Add("receiver", ObtenerDestinatarios(Correos));
+        Request.Add("document", Document);
+
+        JObject Datos = new JObject();
+
+        Datos.Add("Request", Request);
+        Datos.Add("Response", new JObject().FromString(Peticion(Uri, Request.ToString(), "POST")));
+
+        return Datos;
+      
     }
     
     public static JObject Emitir(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string XML)

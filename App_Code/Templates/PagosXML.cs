@@ -23,7 +23,7 @@ public class PagosXML
                     "TipoDeComprobante = \"" + Comprobante.TipoDeComprobante + "\" " +
                     "SubTotal = \"" + Comprobante.Subtotal + "\" " +
                     "Total = \"" + Comprobante.Total + "\" " +
-                    "NoCertificado = \"" + Comprobante.NoCertificado + "\" " + // \"20001000000300022755\" " +
+                    "NoCertificado = \"" + Comprobante.NoCertificado + "\" " + 
                     "Certificado = \"" + Comprobante.Certificado + "\" " +
                     "Sello = \"" + Comprobante.Sello + "\" > " +
 

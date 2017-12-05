@@ -6,9 +6,10 @@ using System.Web;
 /// <summary>
 /// Descripción breve de CCfdiRelacionado
 /// </summary>
-public class CCfdiRelacionado
+public class CCfdiRelacionados
 {
-    private string cfdiRelacionado = "";
+    private string tipoRelacion = "";
+    private CCfdiRelacionado cfdiRelacionado = new CCfdiRelacionado();
 
     // Propiedades utilitarias
     private string error = "";
@@ -17,10 +18,16 @@ public class CCfdiRelacionado
     #region Descripcion
     // Getters y Setter
 
-    public string CfdiRelacionado
+    public string TipoRelacion
     {
-        get { return cfdiRelacionado; }
-        set { cfdiRelacionado = value; }
+        get { return tipoRelacion; }
+        set { tipoRelacion = value; }
+    }
+
+    public CCfdiRelacionado cfdiRelacionados
+    {
+        get { return cfdiRelacionados; }
+        set { cfdiRelacionados = value; }
     }
 
     // Getters y Setters utilitarios
