@@ -42,6 +42,23 @@ public class JObject
 		return obj.ContainsKey(Property);
 	}
 	
+	public JObject FromObject (object obj)
+	{
+		this.obj = (Dictionary<string, object>)obj;
+		return this;
+	}
+
+	public JObject FromDictionary(Dictionary<string, object> dic)
+	{
+		this.obj = dic;
+		return this;
+	}
+
+	public JObject FromString(string json)
+	{
+		return this.FromObject(JSON.Parse(json));
+	}
+
 	public Dictionary<string, object> ToDictionary()
 	{
 		return obj;

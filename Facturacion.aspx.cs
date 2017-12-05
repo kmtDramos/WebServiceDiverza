@@ -14,6 +14,7 @@ public partial class Facturacion : System.Web.UI.Page
 	[WebMethod]
 	public static string TimbrarFactura(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos )
 	{
+		JObject Respuesta = new JObject();
 		string Xml = "";
 		CComprobante comprobante = new CComprobante(); ;
 
@@ -25,24 +26,52 @@ public partial class Facturacion : System.Web.UI.Page
 		System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC);
 		System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC + @"\" + RefID + ".xml", Xml);
 		string encode = Base64.Encode(Xml);
-		string timbrado = Conector.Emitir(Id, Token, RFC, RefID, NoCertificado, Formato, Correos.Split(',').ToList(), encode);
+		JObject Datos = Conector.Emitir(Id, Token, RFC, RefID, NoCertificado, Formato, Correos.Split(',').ToList(), encode);
 
-		Dictionary<string, object> Data = (Dictionary<string, object>)JSON.Parse(timbrado);
+		JObject Response = new JObject().FromObject(Datos.Get("Response"));
 
-		string uuid = Data["uuid"].ToString();
-		string ref_id = Data["ref_id"].ToString();
-		string content = Data["content"].ToString();
+		string uuid = "";
+		string ref_id = "";
+		string content = "";
+		string message = "";
+		string pdf = "";
+		string xml = "";
 
-		string contenido = Base64.Decode(content);
+		if (!Response.Exist("message"))
+		{
 
-		//ZipArchive zip = new ZipArchive(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(contenido)), ZipArchiveMode.Read);
-		//ZipArchiveEntry pdf = zip.GetEntry("invoice.pdf");
-		//ZipArchiveEntry xml = zip.GetEntry("invoice.xml");
+			try
+			{
+				uuid = (Response.Exist("uuid")) ? (string)Response.Get("uuid") : "";
+				ref_id = (Response.Exist("uuid")) ? (string)Response.Get("ref_id") : "";
+				uuid = (Response.Exist("uuid")) ? (string)Response.Get("uuid") : "";
+				content = (Response.Exist("content")) ? ((string)Response.Get("content")) : "";
 
-		JObject Respuesta = new JObject();
+				ZipArchive zip = new ZipArchive(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)), ZipArchiveMode.Read);
+
+				ZipArchiveEntry file_pdf = zip.GetEntry("invoice.pdf");
+				ZipArchiveEntry file_xml = zip.GetEntry("invoice.xml");
+
+				pdf = Base64.Encode(Zip.Read(file_pdf));
+				xml = Base64.Encode(Zip.Read(file_xml));
+			}
+			catch (Exception ex)
+			{
+				message = ex.Message;
+			}
+		}
+		else
+		{
+			message = content;// (string)Response.Get("message");
+		}
+
+		
+		Respuesta.Add("message", message);
 		Respuesta.Add("uuid", uuid);
 		Respuesta.Add("ref_id", ref_id);
-		Respuesta.Add("content", contenido);
+		Respuesta.Add("content", content);
+		Respuesta.Add("pdf", pdf);
+		Respuesta.Add("xml", xml);
 
 		return Respuesta.ToString();
 	}

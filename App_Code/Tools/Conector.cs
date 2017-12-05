@@ -101,7 +101,7 @@ public class Conector
         return contents;
     }
     
-    public static string Emitir(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string XML)
+    public static JObject Emitir(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string XML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 
@@ -128,8 +128,14 @@ public class Conector
 		Request.Add("issuer", Issuer);
 		Request.Add("receiver", ObtenerDestinatarios(Correos));
 		Request.Add("document", Document);
-        return Peticion(Uri, Request.ToString(), "POST"); ;
-    }
+
+		JObject Datos = new JObject();
+
+		Datos.Add("Request", Request);
+		Datos.Add("Response", new JObject().FromString(Peticion(Uri, Request.ToString(), "POST")));
+
+		return Datos;
+	}
 
 	public static JObject ObtenerDestinatarios (List<string> correos)
 	{
@@ -160,7 +166,6 @@ public class Conector
         var Consulta = (HttpWebRequest)WebRequest.Create(URI);
 		Consulta.ContentType = "application/json; charset=UTF-8";
 		Consulta.Method = Metodo;
-		Consulta.ContentLength = Data.Length;
 
 		StreamWriter Envio = new StreamWriter(Consulta.GetRequestStream());
 		Envio.Write(Request);
