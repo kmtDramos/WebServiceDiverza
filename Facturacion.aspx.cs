@@ -26,34 +26,54 @@ public partial class Facturacion : System.Web.UI.Page
 		System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC);
 		System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC + @"\" + RefID + ".xml", Xml);
 		string encode = Base64.Encode(Xml);
-		JObject Datos = Conector.Emitir(Id, Token, RFC, RefID, NoCertificado, Formato, Correos.Split(',').ToList(), encode);
+		
+		JObject Request = new JObject();
+		JObject Credenciales = new JObject();
+		JObject Issuer = new JObject();
+		JObject Receivers = new JObject();
+		JObject Document = new JObject();
 
-		JObject Response = new JObject().FromObject(Datos.Get("Response"));
+		Credenciales.Add("id", Id);
+		Credenciales.Add("token", Token);
+
+		Issuer.Add("rfc", RFC);
+
+		Document.Add("ref-id", RefID);
+		Document.Add("certificate-number", NoCertificado);
+		Document.Add("section", "all");
+		Document.Add("format", Formato);
+		Document.Add("template", "letter");
+		Document.Add("type", "application/vnd.diverza.cfdi_3.3+xml");
+		Document.Add("content", encode);
+
+		Request.Add("credentials", Credenciales);
+		Request.Add("issuer", Issuer);
+		Request.Add("receiver", Conector.ObtenerDestinatarios(Correos.Split(',').ToList()));
+		Request.Add("document", Document);
+
+		string response = Conector.Emitir(Request);
+		
+		Dictionary<string, object> Response = (Dictionary<string, object>)JSON.Parse(response);
 
 		string uuid = "";
 		string ref_id = "";
 		string content = "";
-		string message = "";
+		string message = "Error en el timbrado";
 		string pdf = "";
 		string xml = "";
 
-		if (!Response.Exist("message"))
+		if (!Response.ContainsKey("message"))
 		{
 
 			try
 			{
-				uuid = (Response.Exist("uuid")) ? (string)Response.Get("uuid") : "";
-				ref_id = (Response.Exist("uuid")) ? (string)Response.Get("ref_id") : "";
-				uuid = (Response.Exist("uuid")) ? (string)Response.Get("uuid") : "";
-				content = (Response.Exist("content")) ? ((string)Response.Get("content")) : "";
+				message = "";
 
-				ZipArchive zip = new ZipArchive(new MemoryStream(System.Text.Encoding.UTF8.GetBytes(content)), ZipArchiveMode.Read);
+				uuid = (Response.ContainsKey("uuid")) ? (string)Response["uuid"] : "";
+				ref_id = (Response.ContainsKey("uuid")) ? (string)Response["ref_id"] : "";
+				uuid = (Response.ContainsKey("uuid")) ? (string)Response["uuid"] : "";
+				content = (Response.ContainsKey("content")) ? (string)Response["content"] : "";
 
-				ZipArchiveEntry file_pdf = zip.GetEntry("invoice.pdf");
-				ZipArchiveEntry file_xml = zip.GetEntry("invoice.xml");
-
-				pdf = Base64.Encode(Zip.Read(file_pdf));
-				xml = Base64.Encode(Zip.Read(file_xml));
 			}
 			catch (Exception ex)
 			{
@@ -62,7 +82,7 @@ public partial class Facturacion : System.Web.UI.Page
 		}
 		else
 		{
-			message = content;// (string)Response.Get("message");
+			message = (string)Response["message"];
 		}
 
 		
@@ -70,10 +90,11 @@ public partial class Facturacion : System.Web.UI.Page
 		Respuesta.Add("uuid", uuid);
 		Respuesta.Add("ref_id", ref_id);
 		Respuesta.Add("content", content);
-		Respuesta.Add("pdf", pdf);
-		Respuesta.Add("xml", xml);
+		Respuesta.Add("request", Request);
+		Respuesta.Add("response", response);
+		Respuesta.Add("certificado", NoCertificado);
 
-		return Respuesta.ToString();
+		return content;
 	}
 
 	[WebMethod]

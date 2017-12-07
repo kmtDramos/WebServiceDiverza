@@ -37,7 +37,7 @@ public class Conector
         return contents;
     }
 
-    public static string NotaCredito(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> correos, string encodeXML)
+    public static string NotaCredito(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string encodeXML)
     { 
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 
@@ -51,7 +51,7 @@ public class Conector
                                     "\"rfc\": \"" + RFC + "\"" +
 
                                 "}," +
-                                "\"receiver\": {" + Receivers(correos) + "}," +
+                                "\"receiver\": {" + ObtenerDestinatarios(Correos) + "}," +
                                 "\"document\": {" +
                                     "\"ref-id\": \"" + RefId + "\"," +
                                     "\"certificate-number\":\"" + Certificado + "\"," +
@@ -69,7 +69,7 @@ public class Conector
         return contents;
     }
 
-    public static string Pago(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> correos, string encodeXML)
+    public static string Pago(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string encodeXML)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
         
@@ -83,7 +83,7 @@ public class Conector
                                     "\"rfc\": \"" + RFC + "\"" +
 
                                 "}," +
-                                "\"receiver\": {" + Receivers(correos) + "}," +
+                                "\"receiver\": {" + ObtenerDestinatarios(Correos) + "}," +
                                 "\"document\": {" +
                                     "\"ref-id\": \"" + RefId + "\"," +
                                     "\"certificate-number\":\"" + Certificado + "\"," +
@@ -101,40 +101,10 @@ public class Conector
         return contents;
     }
     
-    public static JObject Emitir(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string XML)
+    public static string Emitir(JObject Request)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
-
-		JObject Request = new JObject();
-		JObject Credenciales = new JObject();
-		JObject Issuer = new JObject();
-		JObject Receivers = new JObject();
-		JObject Document = new JObject();
-
-		Credenciales.Add("id", Id);
-		Credenciales.Add("token", Token);
-
-		Issuer.Add("rfc", RFC);
-
-		Document.Add("ref-id", RefId);
-		Document.Add("certificate-number", Certificado);
-		Document.Add("section", "all");
-		Document.Add("format", Formato);
-		Document.Add("template", "letter");
-		Document.Add("type", "application/vnd.diverza.cfdi_3.3+xml");
-		Document.Add("content", XML);
-
-		Request.Add("credentials", Credenciales);
-		Request.Add("issuer", Issuer);
-		Request.Add("receiver", ObtenerDestinatarios(Correos));
-		Request.Add("document", Document);
-
-		JObject Datos = new JObject();
-
-		Datos.Add("Request", Request);
-		Datos.Add("Response", new JObject().FromString(Peticion(Uri, Request.ToString(), "POST")));
-
-		return Datos;
+		return Peticion(Uri, Request.ToString(), "POST");
 	}
 
 	public static JObject ObtenerDestinatarios (List<string> correos)
@@ -164,7 +134,7 @@ public class Conector
         var Data = Encoding.ASCII.GetBytes(Request); 
 
         var Consulta = (HttpWebRequest)WebRequest.Create(URI);
-		Consulta.ContentType = "application/json; charset=UTF-8";
+		Consulta.ContentType = "application/json";
 		Consulta.Method = Metodo;
 
 		StreamWriter Envio = new StreamWriter(Consulta.GetRequestStream());
