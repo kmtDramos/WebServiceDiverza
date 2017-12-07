@@ -6,7 +6,7 @@ using System.Web;
 public class CTrasladosConcepto
 {
 
-	private CTrasladoConcepto traslado;
+	private CTrasladoConcepto traslado = new CTrasladoConcepto();
 
 	public CTrasladoConcepto Traslado
 	{
@@ -14,10 +14,6 @@ public class CTrasladosConcepto
 		set { traslado = value; }
 	}
 
-	public CTrasladosConcepto()
-	{
-
-	}
 
 	public JObject Validar ()
 	{

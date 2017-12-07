@@ -8,7 +8,6 @@ using System.Web;
 /// </summary>
 public class CComprobante
 {
-
 	// Propiedades default
 	private string serie = "";
 	private string folio = "";
