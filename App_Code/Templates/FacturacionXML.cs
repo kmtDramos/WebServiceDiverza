@@ -19,7 +19,8 @@ public class FacturacionXML
 		"    Serie=\"" + Comprobante.Serie + "\"" + System.Environment.NewLine +
 		"    Version=\"3.3\"" + System.Environment.NewLine +
 		"    LugarExpedicion=\"" + Comprobante.LugarExpedicion + "\"" + System.Environment.NewLine +
-		"    MetodoPago=\"" + Comprobante.MetodoPago + "\"" + System.Environment.NewLine +
+        "    CondicionesDePago=\"" + Comprobante.CondicionDePago + "\"" + System.Environment.NewLine +
+        "    MetodoPago=\"" + Comprobante.MetodoPago + "\"" + System.Environment.NewLine +
 		"    TipoDeComprobante=\"" + Comprobante.TipoDeComprobante + "\"" + System.Environment.NewLine +
 		"    Total=\"" + Comprobante.Total.ToString("0.##") + "\"" + System.Environment.NewLine +
 		"    SubTotal=\"" + Comprobante.Subtotal.ToString("0.##") + "\"" + System.Environment.NewLine +
@@ -38,42 +39,54 @@ public class FacturacionXML
 		"        UsoCFDI=\"" + Comprobante.Receptor.UsoCFDI + "\"/>" + System.Environment.NewLine +
 		"    <cfdi:Conceptos>" + System.Environment.NewLine;
 
-		foreach (CConcepto Concepto in Comprobante.Conceptos)
-		{
-			xml +=
-			"        <cfdi:Concepto" + System.Environment.NewLine +
-			"            Importe=\"" + Concepto.Importe.ToString("0.##") + "\"" + System.Environment.NewLine +
-			"            ValorUnitario=\"" + Concepto.ValorUnitario.ToString("0.##") + "\"" + System.Environment.NewLine +
-			"            Descripcion=\"" + Concepto.Descripcion + "\"" + System.Environment.NewLine +
-			"            Unidad=\"" + Concepto.Unidad + "\"" + System.Environment.NewLine +
-			"            ClaveUnidad=\"" + Concepto.ClaveUnidad + "\"" + System.Environment.NewLine +
-			"            Cantidad=\"" + Concepto.Cantidad.ToString("0.######") + "\"" + System.Environment.NewLine +
-			"            ClaveProdServ=\"" + Concepto.ClaveProdServ + "\">" + System.Environment.NewLine +
-			"            <cfdi:Impuestos>" + System.Environment.NewLine +
-			"                <cfdi:Traslados>" + System.Environment.NewLine +
-			"                    <cfdi:Traslado Base=\"" + Concepto.Impuestos.Traslados[0].Traslado.Contenido.Base.ToString("0.##") + "\"" + System.Environment.NewLine +
-			"                        TipoFactor=\"" + Concepto.Impuestos.Traslados[0].Traslado.Contenido.TipoFactor + "\"" + System.Environment.NewLine +
-			"                        TasaOCuota=\"" + "0.160000" + "\"" + System.Environment.NewLine +
-			"                        Impuesto=\"" + Concepto.Impuestos.Traslados[0].Traslado.Contenido.Impuesto + "\"" + System.Environment.NewLine +
-			"                        Importe=\"" + Concepto.Impuestos.Traslados[0].Traslado.Contenido.Importe.ToString("0.##") + "\"/>" + System.Environment.NewLine +
-			"                </cfdi:Traslados>" + System.Environment.NewLine +
-			"            </cfdi:Impuestos>" + System.Environment.NewLine +
-			"        </cfdi:Concepto>" + System.Environment.NewLine;
-		}
+        foreach (CConcepto Concepto in Comprobante.Conceptos)
+        {
+            xml +=
+            "        <cfdi:Concepto" + System.Environment.NewLine +
+            "            Importe=\"" + Concepto.Importe.ToString("0.##") + "\"" + System.Environment.NewLine +
+            "            ValorUnitario=\"" + Concepto.ValorUnitario.ToString("0.##") + "\"" + System.Environment.NewLine +
+            "            Descripcion=\"" + Concepto.Descripcion + "\"" + System.Environment.NewLine +
+            "            Unidad=\"" + Concepto.Unidad + "\"" + System.Environment.NewLine +
+            "            ClaveUnidad=\"" + Concepto.ClaveUnidad + "\"" + System.Environment.NewLine +
+            "            Cantidad=\"" + Concepto.Cantidad.ToString("0.######") + "\"" + System.Environment.NewLine +
+            "            ClaveProdServ=\"" + Concepto.ClaveProdServ + "\">" + System.Environment.NewLine;
 
-		xml += 
-		"    </cfdi:Conceptos>" + System.Environment.NewLine +
-		"    <cfdi:Impuestos TotalImpuestosTrasladados=\"" + Comprobante.Impuestos.TotalImpuestosTraslados + "\">" + System.Environment.NewLine +
-		"        <cfdi:Traslados>" + System.Environment.NewLine +
-		"            <cfdi:Traslado" + System.Environment.NewLine +
-		"                Importe=\"" + Comprobante.Impuestos.Traslados[0].Traslado.Contenido.Importe.ToString("0.##") + "\"" + System.Environment.NewLine +
-		"                TipoFactor=\"" + Comprobante.Impuestos.Traslados[0].Traslado.Contenido.TipoFactor + "\"" + System.Environment.NewLine +
-		"                TasaOCuota=\"" + "0.160000" + "\"" + System.Environment.NewLine +
-		"                Impuesto=\"" + Comprobante.Impuestos.Traslados[0].Traslado.Contenido.Impuesto + "\"/>" + System.Environment.NewLine +
-		"        </cfdi:Traslados>" + System.Environment.NewLine +
-		"    </cfdi:Impuestos>" + System.Environment.NewLine +
-		"</cfdi:Comprobante>";
-		return xml;
+            if (Concepto.Impuestos.Traslados[0].Traslado.Contenido.Importe != 0)
+            {
+                xml +=
+                "            <cfdi:Impuestos>" + System.Environment.NewLine +
+                "                <cfdi:Traslados>" + System.Environment.NewLine +
+                "                    <cfdi:Traslado Base=\"" + Concepto.Impuestos.Traslados[0].Traslado.Contenido.Base.ToString("0.##") + "\"" + System.Environment.NewLine +
+                "                        TipoFactor=\"" + Concepto.Impuestos.Traslados[0].Traslado.Contenido.TipoFactor + "\"" + System.Environment.NewLine +
+                "                        TasaOCuota=\"" + "0.160000" + "\"" + System.Environment.NewLine +
+                "                        Impuesto=\"" + Concepto.Impuestos.Traslados[0].Traslado.Contenido.Impuesto + "\"" + System.Environment.NewLine +
+                "                        Importe=\"" + Concepto.Impuestos.Traslados[0].Traslado.Contenido.Importe.ToString("0.##") + "\"/>" + System.Environment.NewLine +
+                "                </cfdi:Traslados>" + System.Environment.NewLine +
+                "            </cfdi:Impuestos>" + System.Environment.NewLine;
+            }
+            xml +=
+            "        </cfdi:Concepto>" + System.Environment.NewLine;
+        }
+
+        xml +=
+        "    </cfdi:Conceptos>" + System.Environment.NewLine;
+        if (Comprobante.Impuestos.TotalImpuestosTraslados != 0)
+        {
+            xml +=
+            "    <cfdi:Impuestos TotalImpuestosTrasladados=\"" + Comprobante.Impuestos.TotalImpuestosTraslados + "\">" + System.Environment.NewLine +
+            "        <cfdi:Traslados>" + System.Environment.NewLine +
+            "            <cfdi:Traslado" + System.Environment.NewLine +
+            "                Importe=\"" + Comprobante.Impuestos.Traslados[0].Traslado.Contenido.Importe.ToString("0.##") + "\"" + System.Environment.NewLine +
+            "                TipoFactor=\"" + Comprobante.Impuestos.Traslados[0].Traslado.Contenido.TipoFactor + "\"" + System.Environment.NewLine +
+            "                TasaOCuota=\"" + "0.160000" + "\"" + System.Environment.NewLine +
+            "                Impuesto=\"" + Comprobante.Impuestos.Traslados[0].Traslado.Contenido.Impuesto + "\"/>" + System.Environment.NewLine +
+            "        </cfdi:Traslados>" + System.Environment.NewLine +
+            "    </cfdi:Impuestos>" + System.Environment.NewLine;
+        }
+        xml +=
+        "</cfdi:Comprobante>";
+
+        return xml;
 	}
 
 }

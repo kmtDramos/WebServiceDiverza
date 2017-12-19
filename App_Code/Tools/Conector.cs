@@ -13,30 +13,6 @@ using Newtonsoft.Json.Linq;
 
 public class Conector
 {
-
-    public static string Cancelar(string Id, string Token, string UUID, string RFC, string NoCertificado)
-    {
-        string jsoncPost = "{" +
-                               "\"credentials\": {" +
-									   "\"id\": \"" + Id +"\"," +
-									   "\"token\": \"" + Token +"\"" +
-                               "}," +
-                               "\"issuer\": {" +
-									   "\"rfc\": \"" + RFC +"\"" +
-                               "}," +
-                               "\"document\": {" +
-									   "\"certificate-number\": \"" + NoCertificado +"\"" +
-                               "}" +
-                           "}";
-
-        string Uric = "https://serviciosdemo.diverza.com/api/v1/docuemnts/"+ UUID +"/cancel";
-
-        string contents = "";
-        contents = Peticion(Uric, jsoncPost, "PUT");
-
-        return contents;
-    }
-
     public static string NotaCredito(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string encodeXML)
     { 
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
@@ -69,38 +45,18 @@ public class Conector
         return contents;
     }
 
-    public static string Pago(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string encodeXML)
+    public static string Pago(JObject Request)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
-        
-        string jsonPost = "{" +
-                                "\"credentials\":  {" +
-                                    "\"id\": \"" + Id + "\"," +
-                                     "\"token\": \"" + Token + "\"" +
-
-                                "}," +
-                                "\"issuer\": {" +
-                                    "\"rfc\": \"" + RFC + "\"" +
-
-                                "}," +
-                                "\"receiver\": {" + ObtenerDestinatarios(Correos) + "}," +
-                                "\"document\": {" +
-                                    "\"ref-id\": \"" + RefId + "\"," +
-                                    "\"certificate-number\":\"" + Certificado + "\"," +
-                                    "\"section\": \"all\"," +
-                                    "\"format\": \"" + Formato + "\"," +
-                                    "\"template\": \"letter\"," +
-                                    "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
-                                    "\"content\": \"" + encodeXML + "\"" +
-                                "}" +
-                           "}";
-
-        string contents = "";
-        contents = Peticion(Uri, jsonPost, "POST");
-
-        return contents;
+        return Peticion(Uri, Request.ToString(), "POST");
     }
-    
+
+    public static string Cancelar(JObject Request, string UUID)
+    {
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/" + UUID + "/cancel";
+        return Peticion(Uri, Request.ToString(), "PUT");
+    }
+
     public static string Emitir(JObject Request)
     {
         string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";

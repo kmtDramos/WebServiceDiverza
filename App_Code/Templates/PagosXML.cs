@@ -16,10 +16,10 @@ public class PagosXML
                     "xsi:schemaLocation = \"http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd\" " +
                     "Version = \"3.3\" " +
                     "Serie = \"" + Comprobante.Serie + "\" " +
-                    "Folio = \"\" " +
+                    "Folio = \"" + Comprobante.Folio + "\" " +
                     "Fecha = \"" + Comprobante.Fecha + "\" " +
                     "LugarExpedicion = \"" + Comprobante.LugarExpedicion + "\" " +
-                    "Moneda = \"XXX\" " +
+                    "Moneda = \"" + Comprobante.Moneda + "\" " +
                     "TipoDeComprobante = \"" + Comprobante.TipoDeComprobante + "\" " +
                     "SubTotal = \"" + Comprobante.Subtotal + "\" " +
                     "Total = \"" + Comprobante.Total + "\" " +

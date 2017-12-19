@@ -3,15 +3,16 @@
     Certificado=""
     NoCertificado="20001000000300022755" FormaPago="01"
     Sello=""
-    Fecha="2017-11-29T00:00:00"
-    Folio="11211"
+    Fecha="2017-12-11T00:00:00"
+    Folio="11214"
     Serie="AMT"
     Version="3.3"
     LugarExpedicion="64380"
+    CondicionesDePago="Credito 30 días"
     MetodoPago="PUE"
     TipoDeComprobante="I"
-    Total="5038.34"
-    SubTotal="4343.4"
+    Total="38858.19"
+    SubTotal="33498.44"
     Moneda="MXN"
     TipoCambio="1"
     xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
@@ -22,33 +23,33 @@
         Rfc="MAG041126GT8"
         RegimenFiscal="601"/>
     <cfdi:Receptor
-        Nombre="PC 2 GH AC"
-        Rfc="PDG150205JW9"
+        Nombre="IBERDROLA ENERGIA ALTAMIRA SA DE CV"
+        Rfc="IEA010110UV6"
         UsoCFDI="G03"/>
     <cfdi:Conceptos>
         <cfdi:Concepto
-            Importe="4343.4"
-            ValorUnitario="2171.7"
-            Descripcion="RBC48 - APC REPLACEMENT BATTERY CARTRIDGE #48 Tiempo de entrega 3 A 4 SEMANAS"
+            Importe="33498.44"
+            ValorUnitario="33498.44"
+            Descripcion="IMPRESORA HP LASERJET ENTERPRISE 700 M712DN DOBLE CARTA, MONOCROMATICA Tiempo de entrega INMEDIATA (1 DIA HABIL)"
             Unidad="unidad"
             ClaveUnidad="XUN"
-            Cantidad="2"
+            Cantidad="1"
             ClaveProdServ="01010101">
             <cfdi:Impuestos>
                 <cfdi:Traslados>
-                    <cfdi:Traslado Base="4343.4"
+                    <cfdi:Traslado Base="33498.44"
                         TipoFactor="Tasa"
                         TasaOCuota="0.160000"
                         Impuesto="002"
-                        Importe="694.94"/>
+                        Importe="5359.75"/>
                 </cfdi:Traslados>
             </cfdi:Impuestos>
         </cfdi:Concepto>
     </cfdi:Conceptos>
-    <cfdi:Impuestos TotalImpuestosTrasladados="694.94">
+    <cfdi:Impuestos TotalImpuestosTrasladados="5359.75">
         <cfdi:Traslados>
             <cfdi:Traslado
-                Importe="694.94"
+                Importe="5359.75"
                 TipoFactor="Tasa"
                 TasaOCuota="0.160000"
                 Impuesto="002"/>

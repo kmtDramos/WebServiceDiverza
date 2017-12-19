@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<cfdi:Comprobante
+    Certificado=""
+    NoCertificado="20001000000300022755" FormaPago="01"
+    Sello=""
+    Fecha="2017-12-12T00:00:00"
+    Folio="11218"
+    Serie="AMT"
+    Version="3.3"
+    LugarExpedicion="64380"
+    MetodoPago="PUE"
+    TipoDeComprobante="I"
+    Total="279"
+    SubTotal="279"
+    Moneda="USD"
+    TipoCambio="18"
+    xmlns:cfdi="http://www.sat.gob.mx/cfd/3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd">
+    <cfdi:Emisor
+        Nombre="GRUPO ASERCOM S.A. DE C.V."
+        Rfc="MAG041126GT8"
+        RegimenFiscal="601"/>
+    <cfdi:Receptor
+        Nombre="SC SOFTWARE & SOLUTIONS SA DE CV"
+        Rfc="SAS130918SH0"
+        UsoCFDI="G03"/>
+    <cfdi:Conceptos>
+        <cfdi:Concepto
+            Importe="279"
+            ValorUnitario="279"
+            Descripcion="Cisco WAP371 IEEE 802.11ac 1.27 Gbps Wireless Access Point - ISM Band - UNII Band Tiempo de entrega 5 DIAS HABILES"
+            Unidad="unidad"
+            ClaveUnidad="XUN"
+            Cantidad="1"
+            ClaveProdServ="01010101">
+        </cfdi:Concepto>
+    </cfdi:Conceptos>
+</cfdi:Comprobante>

@@ -5,7 +5,7 @@
     Sello=""
     Fecha="2017-11-28T00:00:00"
     Folio="11205"
-    Serie="ABC"
+    Serie="AMT"
     Version="3.3"
     LugarExpedicion="64380"
     MetodoPago="PUE"
@@ -137,7 +137,7 @@
         <cfdi:Concepto
             Importe="300"
             ValorUnitario="25"
-            Descripcion="Tubo pared gruesa 1", con todos los accesorios de unión y soporteria 	"
+            Descripcion="Tubo pared gruesa 1&quot;, con todos los accesorios de unión y soporteria 	"
             Unidad="unidad"
             ClaveUnidad="XUN"
             Cantidad="12"
@@ -155,7 +155,7 @@
         <cfdi:Concepto
             Importe="13.8"
             ValorUnitario="13.8"
-            Descripcion="Caja FS de 1"	"
+            Descripcion="Caja FS de 1&quot;	"
             Unidad="unidad"
             ClaveUnidad="XUN"
             Cantidad="1"
@@ -173,7 +173,7 @@
         <cfdi:Concepto
             Importe="18.5"
             ValorUnitario="18.5"
-            Descripcion="Lote de misceláneos (pijas, rondanas 3/8", tornillos 3/8", tuercas 3/8") 	"
+            Descripcion="Lote de misceláneos (pijas, rondanas 3/8&quot;, tornillos 3/8&quot;, tuercas 3/8&quot;) 	"
             Unidad="unidad"
             ClaveUnidad="XUN"
             Cantidad="1"

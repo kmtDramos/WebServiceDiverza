@@ -11,7 +11,9 @@ public class CPago
 
     // Propiedades default
     private string serie = "";
+    private string folio = "";
     private DateTime fecha = default(DateTime);
+    private string moneda = "";
     private string nocertificado = "";
     private string certificado = "";
     private decimal subtotal = 0;
@@ -36,10 +38,22 @@ public class CPago
         set { serie = value; }
     }
 
+    public string Folio
+    {
+        get { return folio; }
+        set { folio = value; }
+    }
+
     public string Fecha
     {
         get { return fecha.ToString("o").Substring(0, 19); }
         set { fecha = DateTime.Parse(value, null, System.Globalization.DateTimeStyles.RoundtripKind); }
+    }
+
+    public string Moneda
+    {
+        get { return moneda; }
+        set { moneda = value; }
     }
     public string NoCertificado
     {
