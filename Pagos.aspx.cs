@@ -11,19 +11,19 @@ using System.IO.Compression;
 public partial class Pagos : System.Web.UI.Page
 {
     [WebMethod]
-    public static string TimbrarPagos(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos)
+    public static string TimbrarPago(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos, Dictionary<string,object> ActualizarMontos)
     {
         JObject Respuesta = new JObject();
         string Xml = "";
         CPago comprobante = new CPago(); ;
-
+        
         try { comprobante = GenerarComprobante(Comprobante); }
         catch (Exception ex)
         { }
 
-        Xml = PagosXML.XML(comprobante);
-        System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC);
-        System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC + @"\" + RefID + ".xml", Xml);
+        Xml = PagosXML.XML(comprobante); 
+        System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\Pagos\" + RFC);
+        System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\Pagos\" + RFC + @"\" + RefID + ".xml", Xml);
         string encode = Base64.Encode(Xml);
 
         JObject Request = new JObject();
@@ -60,6 +60,7 @@ public partial class Pagos : System.Web.UI.Page
         string message = "Error en el timbrado";
         string pdf = "";
         string xml = "";
+        int Error = 0;
 
         if (!Response.ContainsKey("message"))
         {
@@ -77,14 +78,16 @@ public partial class Pagos : System.Web.UI.Page
             catch (Exception ex)
             {
                 message = ex.Message;
+                Error = 1;
             }
         }
         else
         {
             message = (string)Response["message"];
+            Error = 1;
         }
 
-
+        Respuesta.Add("Error", Error);
         Respuesta.Add("message", message);
         Respuesta.Add("uuid", uuid);
         Respuesta.Add("ref_id", ref_id);
@@ -92,8 +95,12 @@ public partial class Pagos : System.Web.UI.Page
         Respuesta.Add("request", Request);
         Respuesta.Add("response", response);
         Respuesta.Add("certificado", NoCertificado);
+        Respuesta.Add("serie", Convert.ToString(Comprobante["Serie"]));
+        Respuesta.Add("folio", Convert.ToString(Comprobante["Folio"]));
+        Respuesta.Add("rfc", RFC);
+        Respuesta.Add("ActualizarMontos", ActualizarMontos);
 
-        return content;//Xml; //response;
+        return Respuesta.ToString();
     }
 
     private static CPago GenerarComprobante(Dictionary<string, object> Comprobante)
@@ -128,33 +135,36 @@ public partial class Pagos : System.Web.UI.Page
 
         comprobante.Concepto.ClaveProdServ = Convert.ToString(Concepto["ClaveProdServ"]);
         comprobante.Concepto.Cantidad = Convert.ToDecimal(Concepto["Cantidad"]);
-        comprobante.Concepto.Cantidad = Convert.ToDecimal(Concepto["ClaveUnidad"]);
+        comprobante.Concepto.ClaveUnidad = Convert.ToString(Concepto["ClaveUnidad"]);
         comprobante.Concepto.Descripcion = Convert.ToString(Concepto["Descripcion"]);
         comprobante.Concepto.ValorUnitario = Convert.ToDecimal(Concepto["ValorUnitario"]);
         comprobante.Concepto.Importe = Convert.ToDecimal(Concepto["Importe"]);
 
         Dictionary<string, object> Complemento = (Dictionary<string, object>)Comprobante["Complemento"];
-
-        comprobante.Complementos.FechaPago = Convert.ToString(Complemento["FechaPago"]);
-        comprobante.Complementos.FormaDePagoP = Convert.ToString(Complemento["FormaDePagoP"]);
+        
         comprobante.Complementos.FechaPago = Complemento["FechaPago"].ToString();
         comprobante.Complementos.FormaDePagoP = Convert.ToString(Complemento["FormaDePagoP"]);
         comprobante.Complementos.MonedaP = Convert.ToString(Complemento["MonedaP"]);
+        comprobante.Complementos.TipoCambioP = Convert.ToString(Complemento["TipoCambioP"]);
         comprobante.Complementos.Monto = Convert.ToDecimal(Complemento["Monto"]);
-        comprobante.Complementos.RfcEmisorCtaOrd = Convert.ToString(Complemento["RfcEmisorCtOrd"]);
-        comprobante.Complementos.NomBancoOrdExt = Convert.ToString(Complemento["NomBancoOrdExt"]);
-        comprobante.Complementos.CtaOrdenante = Convert.ToString(Complemento["CtaOrdenante"]);
-        comprobante.Complementos.RfcEmisorCtaBen = Convert.ToString(Complemento["RfcEmisorCtaBen"]);
-        comprobante.Complementos.CtaBeneficiario = Convert.ToString(Complemento["CtaBeneficiario"]);
-        comprobante.Complementos.TipoCadPago = Convert.ToString(Complemento["TipoCadPago"]);
-        comprobante.Complementos.CertPago = Convert.ToString(Complemento["CertPago"]);
-        comprobante.Complementos.CadPago = Convert.ToString(Complemento["CadPago"]);
-        comprobante.Complementos.SelloPago = Convert.ToString(Complemento["SelloPago"]);
+        //comprobante.Complementos.RfcEmisorCtaOrd = Convert.ToString(Complemento["RfcEmisorCtOrd"]);
+        //comprobante.Complementos.NomBancoOrdExt = Convert.ToString(Complemento["NomBancoOrdExt"]);
+        //comprobante.Complementos.CtaOrdenante = Convert.ToString(Complemento["CtaOrdenante"]);
+        //comprobante.Complementos.RfcEmisorCtaBen = Convert.ToString(Complemento["RfcEmisorCtaBen"]);
+        //comprobante.Complementos.CtaBeneficiario = Convert.ToString(Complemento["CtaBeneficiario"]);
+        //comprobante.Complementos.TipoCadPago = Convert.ToString(Complemento["TipoCadPago"]);
+        //comprobante.Complementos.CertPago = Convert.ToString(Complemento["CertPago"]);
+        //comprobante.Complementos.CadPago = Convert.ToString(Complemento["CadPago"]);
+        //comprobante.Complementos.SelloPago = Convert.ToString(Complemento["SelloPago"]);
 
-        Dictionary<string, object> DoctoRelacionados = (Dictionary<string, object>)Complemento["DoctoRelacionados"];
+
+        Dictionary<string, object> DoctoRelacionados = (Dictionary<string, object>)Complemento["DoctoRelacionado"];
 
         comprobante.Complementos.DoctoRelacionados.IdDocumento = Convert.ToString(DoctoRelacionados["IdDocumento"]);
+        comprobante.Complementos.DoctoRelacionados.Serie = Convert.ToString(DoctoRelacionados["Serie"]);
+        comprobante.Complementos.DoctoRelacionados.Folio = Convert.ToString(DoctoRelacionados["Folio"]);
         comprobante.Complementos.DoctoRelacionados.MonedaDR = Convert.ToString(DoctoRelacionados["MonedaDR"]);
+        comprobante.Complementos.DoctoRelacionados.TipoCambioDR = Convert.ToString(DoctoRelacionados["TipoCambioDR"]);
         comprobante.Complementos.DoctoRelacionados.MetodoDePagoDR = Convert.ToString(DoctoRelacionados["MetodoDePagoDR"]);
         comprobante.Complementos.DoctoRelacionados.NumParcialidad = Convert.ToString(DoctoRelacionados["NumParcialidad"]);
         comprobante.Complementos.DoctoRelacionados.ImpSaldoAnt = Convert.ToDecimal(DoctoRelacionados["ImpSaldoAnt"]);

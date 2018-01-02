@@ -12,6 +12,7 @@ public class CComplemento
     private string formaDePagoP = "";
     private string monedaP = "";
     private decimal monto = 0;
+    private string tipoCambioP = "";
     private string rfcEmisorCtaOrd = "";
     private string nomBancoOrdExt = "";
     private string ctaOrdenante = "";
@@ -45,6 +46,11 @@ public class CComplemento
     {
         get { return monto; }
         set { monto = value; }
+    }
+    public string TipoCambioP
+    {
+        get { return tipoCambioP; }
+        set { tipoCambioP = value; }
     }
 
     public string RfcEmisorCtaOrd

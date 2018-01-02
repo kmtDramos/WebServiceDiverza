@@ -9,7 +9,10 @@ using System.Web;
 public class CDoctoRelacionado
 {
     private string idDocumento = "";
+    private string serie = "";
+    private string folio = "";
     private string monedaDR = "";
+    private string tipoCambioDR = "";
     private string metodoDePagoDR = "";
     private string numParcialidad = "";
     private decimal impSaldoAnt = 0;
@@ -20,6 +23,16 @@ public class CDoctoRelacionado
     {
         get { return idDocumento; }
         set { idDocumento = value; }
+    }
+    public string Serie
+    {
+        get { return serie; }
+        set { serie = value; }
+    }
+    public string Folio
+    {
+        get { return folio; }
+        set { folio = value; }
     }
 
     public string MonedaDR
@@ -32,6 +45,11 @@ public class CDoctoRelacionado
     {
         get { return metodoDePagoDR; }
         set { metodoDePagoDR = value; }
+    }
+    public string TipoCambioDR
+    {
+        get { return tipoCambioDR; }
+        set { tipoCambioDR = value; }
     }
 
     public string NumParcialidad
