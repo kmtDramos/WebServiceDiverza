@@ -15,7 +15,7 @@ public class Conector
 {
     public static string NotaCredito(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string encodeXML)
     { 
-        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
+        string Uri = "https://servicios.diverza.com/api/v1/documents/issue";
 
         string jsonPost = "{" +
                                 "\"credentials\":  {" +
@@ -47,19 +47,19 @@ public class Conector
 
     public static string Pago(JObject Request)
     {
-        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
+        string Uri = "https://servicios.diverza.com/api/v1/documents/issue";
         return Peticion(Uri, Request.ToString(), "POST");
     }
 
     public static string Cancelar(JObject Request, string UUID)
     {
-        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/" + UUID + "/cancel";
+        string Uri = "https://servicios.diverza.com/api/v1/documents/" + UUID + "/cancel";
         return Peticion(Uri, Request.ToString(), "PUT");
     }
 
     public static string Emitir(JObject Request)
     {
-        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
+        string Uri = "https://servicios.diverza.com/api/v1/documents/issue";
 		return Peticion(Uri, Request.ToString(), "POST");
 	}
 
