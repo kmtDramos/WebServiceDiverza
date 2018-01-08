@@ -12,7 +12,7 @@ public partial class Facturacion : System.Web.UI.Page
 {
 
 	[WebMethod]
-	public static string TimbrarFactura(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos )
+	public static string TimbrarFactura(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos, string RutaCFDI)
 	{
 		JObject Respuesta = new JObject();
 		string Xml = "";
@@ -24,9 +24,12 @@ public partial class Facturacion : System.Web.UI.Page
 
 		Xml = FacturacionXML.XML(comprobante);
       
-		System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC);
-		System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\XML\" + RFC + @"\" + RefID + ".xml", Xml);
-		string encode = Base64.Encode(Xml);
+		//System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\data\Facturacion\in\" + RFC);
+		//System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\data\Facturacion\in\" + RFC + @"\" + RefID + ".xml", Xml);
+        System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Facturacion\in\" + RFC);
+        System.IO.File.WriteAllText(@"" + RutaCFDI + @"\Facturacion\in\" + RFC + @"\" + RefID + ".xml", Xml);
+
+        string encode = Base64.Encode(Xml);
 
         JObject Request = new JObject();
 		JObject Credenciales = new JObject();
@@ -51,7 +54,6 @@ public partial class Facturacion : System.Web.UI.Page
 		Request.Add("issuer", Issuer);
 		Request.Add("receiver", Conector.ObtenerDestinatarios(Correos.Split(',').ToList()));
 		Request.Add("document", Document);
-        //return Request.ToString();
         string response = Conector.Emitir(Request);
 
 		Dictionary<string, object> Response = (Dictionary<string, object>)JSON.Parse(response);
@@ -60,8 +62,6 @@ public partial class Facturacion : System.Web.UI.Page
 		string ref_id = "";
 		string content = "";
 		string message = "Error en el timbrado";
-		string pdf = "";
-		string xml = "";
         int Error = 0;
 
 		if (!Response.ContainsKey("message"))
@@ -94,7 +94,7 @@ public partial class Facturacion : System.Web.UI.Page
 		Respuesta.Add("uuid", uuid);
 		Respuesta.Add("ref_id", ref_id);
 		Respuesta.Add("content", content);
-		Respuesta.Add("request", Request);
+        Respuesta.Add("request", Request);
 		Respuesta.Add("response", response);
 		Respuesta.Add("certificado", NoCertificado);
         Respuesta.Add("rfc", RFC);
@@ -240,16 +240,14 @@ public partial class Facturacion : System.Web.UI.Page
         Request.Add("credentials", Credenciales);
         Request.Add("issuer", Issuer);
         Request.Add("document", Document);
-        //return Request.ToString();
         string response = Conector.Cancelar(Request, UUID);
 
         Dictionary<string, object> Response = (Dictionary<string, object>)JSON.Parse(response);
-
-        string uuid = "";
-        string content = "";
+        
         string date = "";
         string message = "Error en el timbrado";
         int Error = 0;
+
         if (!Response.ContainsKey("message") || !Response.ContainsKey("error_details"))
         {
 
@@ -257,9 +255,7 @@ public partial class Facturacion : System.Web.UI.Page
             {
                 message = "";
 
-                uuid = (Response.ContainsKey("uuid")) ? (string)Response["uuid"] : "";
                 date = (Response.ContainsKey("date")) ? (string)Response["date"] : "";
-                content = (Response.ContainsKey("acknowledgement")) ? (string)Response["acknowledgement"] : "";
 
             }
             catch (Exception ex)
@@ -270,17 +266,23 @@ public partial class Facturacion : System.Web.UI.Page
         }
         else
         {
-            message = (string)Response["message"];
-            message = (string)Response["error_details"];
-            Error = 1;
+            if (Response.ContainsKey("error_details") && (string)Response["error_details"] == "[\"Document already cancelled\"]")
+            {
+                message = (string)Response["error_details"];
+                Error = 0;
+            }
+            else
+            {
+                message = (string)Response["message"];
+                Error = 1;
+
+            }
         }
 
         Respuesta.Add("Error", Error);
         Respuesta.Add("message", message);
-        Respuesta.Add("uuid", uuid);
         Respuesta.Add("date", date);
         Respuesta.Add("ref_id", RefID);
-        Respuesta.Add("content", content);
         Respuesta.Add("request", Request);
         Respuesta.Add("response", response);
         Respuesta.Add("certificado", NoCertificado);
