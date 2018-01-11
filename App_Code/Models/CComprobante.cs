@@ -20,6 +20,7 @@ public class CComprobante
 	private decimal tipocambio = 0;
 	private string moneda = "";
 	private decimal total = 0;
+    private decimal descuento = 0;
 	private string tipodecomprobante = "";
 	private string metodopago = "";
 	private string lugarexpedicion = "";
@@ -101,7 +102,13 @@ public class CComprobante
 		set { total = value; }
 	}
 
-	public string TipoDeComprobante
+    public decimal Descuento
+    {
+        get { return descuento; }
+        set { descuento = value; }
+    }
+
+    public string TipoDeComprobante
 	{
 		get { return tipodecomprobante; }
 		set { tipodecomprobante = value; }

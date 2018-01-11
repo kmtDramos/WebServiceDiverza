@@ -6,16 +6,17 @@ using System.Web;
 public class CConcepto
 {
 
-	private decimal importe = 0;
+	private string importe = "";
 	private decimal valorunitario = 0;
 	private string unidad = "unidad";
 	private string descripcion = "";
 	private decimal cantidad = 0;
 	private string claveunidad = "";
 	private string claveprodserv = "";
-	private CImpuestoConcepto impuestos = new CImpuestoConcepto();
+    private decimal descuento = 0;
+    private CImpuestoConcepto impuestos = new CImpuestoConcepto();
 
-	public decimal Importe
+	public string Importe
 	{
 		get { return importe; }
 		set { importe = value; }
@@ -57,7 +58,13 @@ public class CConcepto
 		set { claveprodserv = value; }
 	}
 
-	public CImpuestoConcepto Impuestos
+    public decimal Descuento
+    {
+        get { return descuento; }
+        set { descuento = value; }
+    }
+
+    public CImpuestoConcepto Impuestos
 	{
 		get { return impuestos; }
 		set { impuestos = value; }

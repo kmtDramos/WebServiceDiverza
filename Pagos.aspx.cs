@@ -21,9 +21,10 @@ public partial class Pagos : System.Web.UI.Page
         catch (Exception ex)
         { }
 
-        Xml = PagosXML.XML(comprobante); 
-        System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\Pagos\" + RFC);
-        System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\Pagos\" + RFC + @"\" + RefID + ".xml", Xml);
+        Xml = PagosXML.XML(comprobante);
+
+        System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\data\Pagos\in\" + RFC);
+        System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\data\Pagos\in\" + RFC + @"\" + RefID + ".xml", Xml);
         string encode = Base64.Encode(Xml);
 
         JObject Request = new JObject();
@@ -58,8 +59,6 @@ public partial class Pagos : System.Web.UI.Page
         string ref_id = "";
         string content = "";
         string message = "Error en el timbrado";
-        string pdf = "";
-        string xml = "";
         int Error = 0;
 
         if (!Response.ContainsKey("message"))

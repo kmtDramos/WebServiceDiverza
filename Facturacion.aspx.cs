@@ -115,6 +115,7 @@ public partial class Facturacion : System.Web.UI.Page
         comprobante.NoCertificado = Convert.ToString(Comprobante["NoCertificado"]);
         comprobante.Certificado = Convert.ToString(Comprobante["Certificado"]);
         comprobante.Subtotal = Convert.ToDecimal(Comprobante["SubTotal"]);
+        comprobante.Descuento = Convert.ToDecimal(Comprobante["Descuento"]);
         comprobante.TipoCambio = Convert.ToDecimal(Comprobante["TipoCambio"]);
         comprobante.Moneda = Convert.ToString(Comprobante["Moneda"]);
         comprobante.Total = Convert.ToDecimal(Comprobante["Total"]);
@@ -171,20 +172,22 @@ public partial class Facturacion : System.Web.UI.Page
 
                 conceptos[i] = new CConcepto
                 {
-                    Importe = Convert.ToDecimal(Concepto["Importe"]),
+                    Importe = Convert.ToString(Concepto["Importe"]),
                     ValorUnitario = Convert.ToDecimal(Concepto["ValorUnitario"]),
                     Descripcion = Convert.ToString(Concepto["Descripcion"]),
                     Cantidad = Convert.ToDecimal(Concepto["Cantidad"]),
                     ClaveUnidad = Convert.ToString(Concepto["ClaveUnidad"]),
                     ClaveProdServ = Convert.ToString(Concepto["ClaveProdServ"]),
+                    Descuento = Convert.ToDecimal(Concepto["Descuento"]),
                     Impuestos = impuestos
                 };
 
-                conceptos[i].Importe = Convert.ToDecimal(Concepto["Importe"]);
+                conceptos[i].Importe = Convert.ToString(Concepto["Importe"]);
                 conceptos[i].ValorUnitario = Convert.ToDecimal(Concepto["ValorUnitario"]);
                 conceptos[i].Descripcion = Convert.ToString(Concepto["Descripcion"]);
                 conceptos[i].Cantidad = Convert.ToDecimal(Concepto["Cantidad"]);
                 conceptos[i].ClaveProdServ = Convert.ToString(Concepto["ClaveProdServ"]);
+                conceptos[i].Descuento = Convert.ToDecimal(Concepto["Descuento"]);
 
                 i++;
             }
