@@ -23,9 +23,8 @@ public partial class Facturacion : System.Web.UI.Page
 		{  }
 
 		Xml = FacturacionXML.XML(comprobante);
-      
-		//System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\data\Facturacion\in\" + RFC);
-		//System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\data\Facturacion\in\" + RFC + @"\" + RefID + ".xml", Xml);
+        
+        // Save file XML in
         System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Facturacion\in\" + RFC);
         System.IO.File.WriteAllText(@"" + RutaCFDI + @"\Facturacion\in\" + RFC + @"\" + RefID + ".xml", Xml);
 
@@ -55,9 +54,9 @@ public partial class Facturacion : System.Web.UI.Page
 		Request.Add("receiver", Conector.ObtenerDestinatarios(Correos.Split(',').ToList()));
 		Request.Add("document", Document);
         string response = Conector.Emitir(Request);
-
+        //return response.ToString();
 		Dictionary<string, object> Response = (Dictionary<string, object>)JSON.Parse(response);
-
+        //return Response.ToString();
 		string uuid = "";
 		string ref_id = "";
 		string content = "";
@@ -73,10 +72,12 @@ public partial class Facturacion : System.Web.UI.Page
 
 				uuid = (Response.ContainsKey("uuid")) ? (string)Response["uuid"] : "";
 				ref_id = (Response.ContainsKey("uuid")) ? (string)Response["ref_id"] : "";
-				uuid = (Response.ContainsKey("uuid")) ? (string)Response["uuid"] : "";
 				content = (Response.ContainsKey("content")) ? (string)Response["content"] : "";
 
-			}
+                // Save file ZIP out
+                GuardarContenido(RutaCFDI, content, comprobante.Receptor.RFC, comprobante.Serie, comprobante.Folio);
+
+            }
 			catch (Exception ex)
 			{
 				message = ex.Message;
@@ -93,11 +94,10 @@ public partial class Facturacion : System.Web.UI.Page
 		Respuesta.Add("message", message);
 		Respuesta.Add("uuid", uuid);
 		Respuesta.Add("ref_id", ref_id);
-		Respuesta.Add("content", content);
+        Respuesta.Add("certificado", NoCertificado);
+        Respuesta.Add("content", content);
         Respuesta.Add("request", Request);
 		Respuesta.Add("response", response);
-		Respuesta.Add("certificado", NoCertificado);
-        Respuesta.Add("rfc", RFC);
 
 		return Respuesta.ToString();
     }
@@ -123,6 +123,11 @@ public partial class Facturacion : System.Web.UI.Page
         comprobante.MetodoPago = Convert.ToString(Comprobante["MetodoPago"]);
         comprobante.LugarExpedicion = Convert.ToString(Comprobante["LugarExpedicion"]);
         comprobante.Sello = Convert.ToString(Comprobante["Sello"]);
+
+        Dictionary<string, object> CFDIRelacionado = (Dictionary<string, object>)Comprobante["CFDIRelacionado"];
+        comprobante.CFDIRelacionado.TipoRelacion = Convert.ToString(CFDIRelacionado["TipoRelacion"]);
+        comprobante.CFDIRelacionado.UUID = Convert.ToString(CFDIRelacionado["UUID"]);
+        
 
         Dictionary<string, object> Emisor = (Dictionary<string, object>)Comprobante["Emisor"];
         Dictionary<string, object> Receptor = (Dictionary<string, object>)Comprobante["Receptor"];
@@ -222,6 +227,39 @@ public partial class Facturacion : System.Web.UI.Page
         comprobante.Impuestos.Traslados = trasladosglobales;
 
         return comprobante;
+    }
+
+    private static void GuardarContenido(string RutaCFDI, string Contenido, string RFCCliente, string Serie, string Folio)
+    {
+        string nameFile = Serie + Folio;
+        System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Facturacion\out\" + RFCCliente);
+        System.IO.File.WriteAllBytes(@"" + RutaCFDI + @"\Facturacion\out\" + RFCCliente + @"\" + nameFile + ".zip", Decode(Contenido));
+
+        //Descomprimir zip
+        string zipPath = @"" + RutaCFDI + @"\Facturacion\out\" + RFCCliente + @"\" + nameFile + ".zip";
+        string extractPath = @"" + RutaCFDI + @"\Facturacion\out\" + RFCCliente;
+
+        ZipArchive archive = ZipFile.OpenRead(zipPath);
+        {
+            foreach (ZipArchiveEntry entry in archive.Entries)
+            {
+                if (entry.FullName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                {
+                    entry.ExtractToFile(Path.Combine(extractPath, nameFile+".xml"));
+                }
+
+                if (entry.FullName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                {
+                    entry.ExtractToFile(Path.Combine(extractPath, nameFile+".pdf"));
+                }
+            }
+        }
+    }
+
+    private static byte[] Decode(string Hash)
+    {
+        byte[] bytes = System.Convert.FromBase64String(Hash);
+        return bytes; //System.Text.Encoding.UTF8.GetString(bytes);
     }
 
     [WebMethod]

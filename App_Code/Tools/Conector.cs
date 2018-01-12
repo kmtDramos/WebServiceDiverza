@@ -59,7 +59,7 @@ public class Conector
 
     public static string Emitir(JObject Request)
     {
-        string Uri = "https://servicios.diverza.com/api/v1/documents/issue";
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
 		return Peticion(Uri, Request.ToString(), "POST");
 	}
 

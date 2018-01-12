@@ -29,6 +29,7 @@ public class CComprobante
 	private CReceptor receptor = new CReceptor();
 	private CConcepto[] conceptos;
 	private CImpuestoComprobante impuestos = new CImpuestoComprobante();
+    private CCfdiRelacionado cfdiRelacionado = new CCfdiRelacionado();
 
 	// Propiedades utilitarias
 	private string error = "";
@@ -156,6 +157,11 @@ public class CComprobante
 		set { impuestos = value; }
 	}
 
+    public CCfdiRelacionado CFDIRelacionado
+    {
+        get { return cfdiRelacionado; }
+        set { cfdiRelacionado = value; }
+    }
 	// Getters y Setters utilitarios
 	public string Error
 	{

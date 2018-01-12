@@ -8,7 +8,8 @@ using System.Web;
 /// </summary>
 public class CCfdiRelacionado
 {
-    private string cfdiRelacionado = "";
+    private string tipoRelacion = "";
+    private string uuid = "";
 
     // Propiedades utilitarias
     private string error = "";
@@ -17,10 +18,15 @@ public class CCfdiRelacionado
     #region Descripcion
     // Getters y Setter
 
-    public string CfdiRelacionado
+    public string TipoRelacion
     {
-        get { return cfdiRelacionado; }
-        set { cfdiRelacionado = value; }
+        get { return tipoRelacion; }
+        set { tipoRelacion = value; }
+    }
+    public string UUID
+    {
+        get { return uuid; }
+        set { uuid = value; }
     }
 
     // Getters y Setters utilitarios

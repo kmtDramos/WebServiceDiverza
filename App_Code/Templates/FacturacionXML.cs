@@ -30,12 +30,23 @@ public class FacturacionXML
             xml +=
             "    Descuento=\"" + Comprobante.Descuento + "\"" + System.Environment.NewLine;
         }
-        xml+=
-		"    Moneda=\"" + Comprobante.Moneda + "\"" + System.Environment.NewLine +
-		"    TipoCambio=\"" + Comprobante.TipoCambio.ToString("0.##") + "\"" + System.Environment.NewLine +
-		"    xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\"" + System.Environment.NewLine +
-		"    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + System.Environment.NewLine +
-		"    xsi:schemaLocation=\"http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd\">" + System.Environment.NewLine +
+        xml +=
+        "    Moneda=\"" + Comprobante.Moneda + "\"" + System.Environment.NewLine +
+        "    TipoCambio=\"" + Comprobante.TipoCambio.ToString("0.##") + "\"" + System.Environment.NewLine +
+        "    xmlns:cfdi=\"http://www.sat.gob.mx/cfd/3\"" + System.Environment.NewLine +
+        "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + System.Environment.NewLine +
+        "    xsi:schemaLocation=\"http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd\">" + System.Environment.NewLine;
+
+        if(Comprobante.CFDIRelacionado.TipoRelacion != "")
+        {
+            xml +=
+            "   <cfdi:CfdiRelacionados " + System.Environment.NewLine +
+            "       TipoRelacion = \"" + Comprobante.CFDIRelacionado.TipoRelacion + "\" >" + System.Environment.NewLine +
+            "       <cfdi:CfdiRelacionado UUID = \"" + Comprobante.CFDIRelacionado.UUID + "\" /> " + System.Environment.NewLine +
+            "   </cfdi:CfdiRelacionados> " + System.Environment.NewLine;
+        }
+
+        xml +=
 		"    <cfdi:Emisor" + System.Environment.NewLine +
 		"        Nombre=\"" + Comprobante.Emisor.Nombre + "\"" + System.Environment.NewLine +
 		"        Rfc=\"" + Comprobante.Emisor.RFC + "\"" + System.Environment.NewLine +

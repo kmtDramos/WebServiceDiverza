@@ -34,10 +34,10 @@ public class NotaCreditoXML
                             "Sello = \"\" >" +
 
                             "<cfdi:CfdiRelacionados " +
-                                "TipoRelacion = \"" + Comprobante.CfdiRelacionados.TipoRelacion + "\" >" +
+                                "TipoRelacion = \"" + Comprobante.CfdiRelacionado.TipoRelacion + "\" >" +
 
                                 "<cfdi:CfdiRelacionado " +
-                                    "UUID = \"" + Comprobante.CfdiRelacionados.cfdiRelacionados + "\" />" +
+                                    "UUID = \"" + Comprobante.CfdiRelacionado.UUID + "\" />" +
 
                             "</cfdi:CfdiRelacionados > " +
 

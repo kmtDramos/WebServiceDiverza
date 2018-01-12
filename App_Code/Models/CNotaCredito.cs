@@ -24,7 +24,7 @@ public class CNotaCredito
     private string metodopago = "";
     private string lugarexpedicion = "";
     private string sello = "";
-    private CCfdiRelacionados cfdiRelacionados = new CCfdiRelacionados();
+    private CCfdiRelacionado cfdiRelacionado = new CCfdiRelacionado();
     private CEmisor emisor = new CEmisor();
     private CReceptor receptor = new CReceptor();
     private CConcepto concepto = new CConcepto();
@@ -126,10 +126,10 @@ public class CNotaCredito
         set { sello = value; }
     }
 
-    public CCfdiRelacionados CfdiRelacionados
+    public CCfdiRelacionado CfdiRelacionado
     {
-        get { return cfdiRelacionados; }
-        set { cfdiRelacionados = value; }
+        get { return cfdiRelacionado; }
+        set { cfdiRelacionado = value; }
     }
 
     public CEmisor Emisor
