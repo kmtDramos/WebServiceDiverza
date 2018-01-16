@@ -13,47 +13,22 @@ using Newtonsoft.Json.Linq;
 
 public class Conector
 {
-    public static string NotaCredito(string Id, string Token, string RFC, string RefId, string Certificado, string Formato, List<string> Correos, string encodeXML)
+    public static string NotaCredito(JObject Request)
     { 
-        string Uri = "https://servicios.diverza.com/api/v1/documents/issue";
-
-        string jsonPost = "{" +
-                                "\"credentials\":  {" +
-                                    "\"id\": \"" + Id + "\"," +
-                                     "\"token\": \"" + Token + "\"" +
-
-                                "}," +
-                                "\"issuer\": {" +
-                                    "\"rfc\": \"" + RFC + "\"" +
-
-                                "}," +
-                                "\"receiver\": {" + ObtenerDestinatarios(Correos) + "}," +
-                                "\"document\": {" +
-                                    "\"ref-id\": \"" + RefId + "\"," +
-                                    "\"certificate-number\":\"" + Certificado + "\"," +
-                                    "\"section\": \"all\"," +
-                                    "\"format\": \"" + Formato + "\"," +
-                                    "\"template\": \"letter\"," +
-                                    "\"type\": \"application/vnd.diverza.cfdi_3.3+xml\"," +
-                                    "\"content\": \"" + encodeXML + "\"" +
-                                "}" +
-                           "}";
-
-        string contents = "";
-        contents = Peticion(Uri, jsonPost, "POST");
-
-        return contents;
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
+        return Peticion(Uri, Request.ToString(), "POST");
+        
     }
 
     public static string Pago(JObject Request)
     {
-        string Uri = "https://servicios.diverza.com/api/v1/documents/issue";
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/issue";
         return Peticion(Uri, Request.ToString(), "POST");
     }
 
     public static string Cancelar(JObject Request, string UUID)
     {
-        string Uri = "https://servicios.diverza.com/api/v1/documents/" + UUID + "/cancel";
+        string Uri = "https://serviciosdemo.diverza.com/api/v1/documents/" + UUID + "/cancel";
         return Peticion(Uri, Request.ToString(), "PUT");
     }
 

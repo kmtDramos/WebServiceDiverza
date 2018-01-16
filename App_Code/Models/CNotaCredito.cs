@@ -24,10 +24,10 @@ public class CNotaCredito
     private string metodopago = "";
     private string lugarexpedicion = "";
     private string sello = "";
-    private CCfdiRelacionado cfdiRelacionado = new CCfdiRelacionado();
+    private CCfdiRelacionado[] cfdisRelacionados;
     private CEmisor emisor = new CEmisor();
     private CReceptor receptor = new CReceptor();
-    private CConcepto concepto = new CConcepto();
+    private CConceptoNotaCredito[] conceptos;
     private CImpuestoComprobante impuestos = new CImpuestoComprobante();
 
     // Propiedades utilitarias
@@ -126,10 +126,10 @@ public class CNotaCredito
         set { sello = value; }
     }
 
-    public CCfdiRelacionado CfdiRelacionado
+    public CCfdiRelacionado[] CfdisRelacionados
     {
-        get { return cfdiRelacionado; }
-        set { cfdiRelacionado = value; }
+        get { return cfdisRelacionados; }
+        set { cfdisRelacionados = value; }
     }
 
     public CEmisor Emisor
@@ -144,10 +144,10 @@ public class CNotaCredito
         set { receptor = value; }
     }
 
-    public CConcepto Concepto
+    public CConceptoNotaCredito[] Conceptos
     {
-        get { return concepto; }
-        set { concepto = value; }
+        get { return conceptos; }
+        set { conceptos = value; }
     }
 
     public CImpuestoComprobante Impuestos

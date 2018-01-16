@@ -64,7 +64,6 @@ public class FacturacionXML
             "            Importe=\"" + Concepto.Importe + "\"" + System.Environment.NewLine +
             "            ValorUnitario=\"" + Concepto.ValorUnitario.ToString("0.##") + "\"" + System.Environment.NewLine +
             "            Descripcion=\"" + Concepto.Descripcion + "\"" + System.Environment.NewLine +
-            "            Unidad=\"" + Concepto.Unidad + "\"" + System.Environment.NewLine +
             "            ClaveUnidad=\"" + Concepto.ClaveUnidad + "\"" + System.Environment.NewLine +
             "            Cantidad=\"" + Concepto.Cantidad.ToString("0.######") + "\"" + System.Environment.NewLine;
 

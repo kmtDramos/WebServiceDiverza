@@ -6,7 +6,7 @@ using System.Web;
 public class CConceptoNotaCredito
 {
 
-    private decimal importe = 0;
+    private string importe = "";
     private decimal valorunitario = 0;
     private string descripcion = "";
     private decimal cantidad = 0;
@@ -14,7 +14,7 @@ public class CConceptoNotaCredito
     private string claveprodserv = "";
     private CImpuestoConceptoNotaCredito impuestos = new CImpuestoConceptoNotaCredito();
 
-    public decimal Importe
+    public string Importe
     {
         get { return importe; }
         set { importe = value; }

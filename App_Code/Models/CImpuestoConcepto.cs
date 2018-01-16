@@ -14,11 +14,6 @@ public class CImpuestoConcepto
 		set { traslados = value; }
 	}
 
-	public CImpuestoConcepto()
-	{
-
-	}
-
 	public JObject Validar()
 	{
 		JObject Error = new JObject();
