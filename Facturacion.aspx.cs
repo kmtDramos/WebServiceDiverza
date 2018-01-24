@@ -115,7 +115,7 @@ public partial class Facturacion : System.Web.UI.Page
         comprobante.NoCertificado = Convert.ToString(Comprobante["NoCertificado"]);
         comprobante.Certificado = Convert.ToString(Comprobante["Certificado"]);
         comprobante.Subtotal = Convert.ToDecimal(Comprobante["SubTotal"]);
-        comprobante.Descuento = Convert.ToDecimal(Comprobante["Descuento"]);
+        comprobante.Descuento = Convert.ToString(Comprobante["Descuento"]);
         comprobante.TipoCambio = Convert.ToDecimal(Comprobante["TipoCambio"]);
         comprobante.Moneda = Convert.ToString(Comprobante["Moneda"]);
         comprobante.Total = Convert.ToDecimal(Comprobante["Total"]);
@@ -183,7 +183,7 @@ public partial class Facturacion : System.Web.UI.Page
                     Cantidad = Convert.ToDecimal(Concepto["Cantidad"]),
                     ClaveUnidad = Convert.ToString(Concepto["ClaveUnidad"]),
                     ClaveProdServ = Convert.ToString(Concepto["ClaveProdServ"]),
-                    Descuento = Convert.ToDecimal(Concepto["Descuento"]),
+                    Descuento = Convert.ToString(Concepto["Descuento"]),
                     Impuestos = impuestos
                 };
 
@@ -192,7 +192,7 @@ public partial class Facturacion : System.Web.UI.Page
                 conceptos[i].Descripcion = Convert.ToString(Concepto["Descripcion"]);
                 conceptos[i].Cantidad = Convert.ToDecimal(Concepto["Cantidad"]);
                 conceptos[i].ClaveProdServ = Convert.ToString(Concepto["ClaveProdServ"]);
-                conceptos[i].Descuento = Convert.ToDecimal(Concepto["Descuento"]);
+                conceptos[i].Descuento = Convert.ToString(Concepto["Descuento"]);
 
                 i++;
             }

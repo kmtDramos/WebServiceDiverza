@@ -11,7 +11,7 @@ using System.IO.Compression;
 public partial class Pagos : System.Web.UI.Page
 {
     [WebMethod]
-    public static string TimbrarPago(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos, Dictionary<string,object> ActualizarMontos)
+    public static string TimbrarPago(string Id, string Token, Dictionary<string, object> Comprobante, string RFC, string RefID, string NoCertificado, string Formato, string Correos, string RutaCFDI)//Dictionary<string,object> ActualizarMontos)
     {
         JObject Respuesta = new JObject();
         string Xml = "";
@@ -23,8 +23,10 @@ public partial class Pagos : System.Web.UI.Page
 
         Xml = PagosXML.XML(comprobante);
 
-        System.IO.Directory.CreateDirectory(@"C:\inetpub\wwwroot\WebServiceDiverza\data\Pagos\in\" + RFC);
-        System.IO.File.WriteAllText(@"C:\inetpub\wwwroot\WebServiceDiverza\data\Pagos\in\" + RFC + @"\" + RefID + ".xml", Xml);
+        // Save file XML in
+        System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Pagos\in\" + RFC);
+        System.IO.File.WriteAllText(@"" + RutaCFDI + @"\Pagos\in\" + RFC + @"\" + RefID + ".xml", Xml);
+        //return Xml;
         string encode = Base64.Encode(Xml);
 
         JObject Request = new JObject();
@@ -70,8 +72,10 @@ public partial class Pagos : System.Web.UI.Page
 
                 uuid = (Response.ContainsKey("uuid")) ? (string)Response["uuid"] : "";
                 ref_id = (Response.ContainsKey("uuid")) ? (string)Response["ref_id"] : "";
-                uuid = (Response.ContainsKey("uuid")) ? (string)Response["uuid"] : "";
                 content = (Response.ContainsKey("content")) ? (string)Response["content"] : "";
+
+                // Save file ZIP out
+                GuardarContenido(RutaCFDI, content, comprobante.Receptor.RFC, comprobante.Serie, comprobante.Folio);
 
             }
             catch (Exception ex)
@@ -97,7 +101,7 @@ public partial class Pagos : System.Web.UI.Page
         Respuesta.Add("serie", Convert.ToString(Comprobante["Serie"]));
         Respuesta.Add("folio", Convert.ToString(Comprobante["Folio"]));
         Respuesta.Add("rfc", RFC);
-        Respuesta.Add("ActualizarMontos", ActualizarMontos);
+        //Respuesta.Add("ActualizarMontos", ActualizarMontos);
 
         return Respuesta.ToString();
     }
@@ -172,4 +176,38 @@ public partial class Pagos : System.Web.UI.Page
 
         return comprobante;
     }
+
+    private static void GuardarContenido(string RutaCFDI, string Contenido, string RFCCliente, string Serie, string Folio)
+    {
+        string nameFile = Serie + Folio;
+        System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Pagos\out\" + RFCCliente);
+        System.IO.File.WriteAllBytes(@"" + RutaCFDI + @"\Pagos\out\" + RFCCliente + @"\" + nameFile + ".zip", Decode(Contenido));
+
+        //Descomprimir zip
+        string zipPath = @"" + RutaCFDI + @"\Pagos\out\" + RFCCliente + @"\" + nameFile + ".zip";
+        string extractPath = @"" + RutaCFDI + @"\Pagos\out\" + RFCCliente;
+
+        ZipArchive archive = ZipFile.OpenRead(zipPath);
+        {
+            foreach (ZipArchiveEntry entry in archive.Entries)
+            {
+                if (entry.FullName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+                {
+                    entry.ExtractToFile(Path.Combine(extractPath, nameFile + ".xml"));
+                }
+
+                if (entry.FullName.EndsWith(".pdf", StringComparison.OrdinalIgnoreCase))
+                {
+                    entry.ExtractToFile(Path.Combine(extractPath, nameFile + ".pdf"));
+                }
+            }
+        }
+    }
+
+    private static byte[] Decode(string Hash)
+    {
+        byte[] bytes = System.Convert.FromBase64String(Hash);
+        return bytes; //System.Text.Encoding.UTF8.GetString(bytes);
+    }
+
 }

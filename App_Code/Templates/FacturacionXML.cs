@@ -25,7 +25,7 @@ public class FacturacionXML
         "    TipoDeComprobante=\"" + Comprobante.TipoDeComprobante + "\"" + System.Environment.NewLine +
         "    Total=\"" + Comprobante.Total.ToString("0.##") + "\"" + System.Environment.NewLine +
         "    SubTotal=\"" + Comprobante.Subtotal.ToString("0.##") + "\"" + System.Environment.NewLine;
-        if (Comprobante.Descuento != 0)
+        if (Comprobante.Descuento != "")
         {
             xml +=
             "    Descuento=\"" + Comprobante.Descuento + "\"" + System.Environment.NewLine;
@@ -67,7 +67,7 @@ public class FacturacionXML
             "            ClaveUnidad=\"" + Concepto.ClaveUnidad + "\"" + System.Environment.NewLine +
             "            Cantidad=\"" + Concepto.Cantidad.ToString("0.######") + "\"" + System.Environment.NewLine;
 
-            if (Concepto.Descuento != 0)
+            if (Comprobante.Descuento != "")//if (Concepto.Descuento != 0) // Si existe un descuento TOTAL, se aplica el descuento a cada uno
             {
                 xml +=
                 "            Descuento=\"" + Concepto.Descuento + "\"" + System.Environment.NewLine;
