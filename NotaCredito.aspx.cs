@@ -251,8 +251,9 @@ public partial class NotaCredito : System.Web.UI.Page
         return notaCredito;
     }
 
-    private static void GuardarContenido(string RutaCFDI, string Contenido, string RFCCliente, string Serie, string Folio)
+    private static void GuardarContenido(string RutaCFDI, string Contenido, string RFC, string Serie, string Folio)
     {
+        string RFCCliente = RFC.Replace("&amp;", "&");
         string nameFile = Serie + Folio;
         System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\NotaCredito\out\" + RFCCliente);
         System.IO.File.WriteAllBytes(@"" + RutaCFDI + @"\NotaCredito\out\" + RFCCliente + @"\" + nameFile + ".zip", Decode(Contenido));

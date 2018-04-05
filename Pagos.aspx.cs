@@ -177,8 +177,9 @@ public partial class Pagos : System.Web.UI.Page
         return comprobante;
     }
 
-    private static void GuardarContenido(string RutaCFDI, string Contenido, string RFCCliente, string Serie, string Folio)
+    private static void GuardarContenido(string RutaCFDI, string Contenido, string RFC, string Serie, string Folio)
     {
+        string RFCCliente = RFC.Replace("&amp;", "&");
         string nameFile = Serie + Folio;
         System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Pagos\out\" + RFCCliente);
         System.IO.File.WriteAllBytes(@"" + RutaCFDI + @"\Pagos\out\" + RFCCliente + @"\" + nameFile + ".zip", Decode(Contenido));

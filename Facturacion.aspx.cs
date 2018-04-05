@@ -229,8 +229,9 @@ public partial class Facturacion : System.Web.UI.Page
         return comprobante;
     }
 
-    private static void GuardarContenido(string RutaCFDI, string Contenido, string RFCCliente, string Serie, string Folio)
+    private static void GuardarContenido(string RutaCFDI, string Contenido, string RFC, string Serie, string Folio)
     {
+        string RFCCliente = RFC.Replace("&amp;", "&");
         string nameFile = Serie + Folio;
         System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Facturacion\out\" + RFCCliente);
         System.IO.File.WriteAllBytes(@"" + RutaCFDI + @"\Facturacion\out\" + RFCCliente + @"\" + nameFile + ".zip", Decode(Contenido));
@@ -289,7 +290,7 @@ public partial class Facturacion : System.Web.UI.Page
         string message = "Error en el timbrado";
         int Error = 0;
 
-        if (!Response.ContainsKey("message") || !Response.ContainsKey("error_details"))
+        if (!Response.ContainsKey("message"))
         {
 
             try
