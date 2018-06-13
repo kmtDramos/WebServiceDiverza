@@ -30,14 +30,16 @@ public class NotaCreditoXML
         "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" + System.Environment.NewLine +
         "    xsi:schemaLocation=\"http://www.sat.gob.mx/cfd/3 http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd\">" + System.Environment.NewLine;
 
+        xml +=
+        "   <cfdi:CfdiRelacionados " + System.Environment.NewLine +
+        "       TipoRelacion = \"" + NotaCredito.TipoRelacion + "\" >" + System.Environment.NewLine;
         foreach (CCfdiRelacionado cfdiRelacionado in NotaCredito.CfdisRelacionados)
         {
             xml +=
-            "   <cfdi:CfdiRelacionados " + System.Environment.NewLine +
-            "       TipoRelacion = \"" + cfdiRelacionado.TipoRelacion + "\" >" + System.Environment.NewLine +
-            "       <cfdi:CfdiRelacionado UUID = \"" + cfdiRelacionado.UUID + "\" /> " + System.Environment.NewLine +
-            "   </cfdi:CfdiRelacionados> " + System.Environment.NewLine;
+            "       <cfdi:CfdiRelacionado UUID = \"" + cfdiRelacionado.UUID + "\" /> " + System.Environment.NewLine;
         }
+        xml +=
+        "   </cfdi:CfdiRelacionados> " + System.Environment.NewLine;
 
         xml +=
         "    <cfdi:Emisor" + System.Environment.NewLine +

@@ -144,6 +144,8 @@ public partial class NotaCredito : System.Web.UI.Page
                 cfdisRelacionados[i].TipoRelacion = Convert.ToString(cfdiRelacionado["TipoRelacion"]);
                 cfdisRelacionados[i].UUID = Convert.ToString(cfdiRelacionado["UUID"]);
 
+                notaCredito.TipoRelacion = Convert.ToString(cfdiRelacionado["TipoRelacion"]);
+
                 i++;
             }
             notaCredito.CfdisRelacionados = cfdisRelacionados;
