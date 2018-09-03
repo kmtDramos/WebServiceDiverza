@@ -13,8 +13,9 @@ public class CComplemento
     private string monedaP = "";
     private decimal monto = 0;
     private string tipoCambioP = "";
-    private string rfcEmisorCtaOrd = "";
+    private string numOperacion = "";
     private string nomBancoOrdExt = "";
+    private string rfcEmisorCtaOrd = "";
     private string ctaOrdenante = "";
     private string rfcEmisorCtaBen = "";
     private string ctaBeneficiario = "";
@@ -22,7 +23,7 @@ public class CComplemento
     private string certPago = "";
     private string cadPago = "";
     private string selloPago = "";
-    private CDoctoRelacionado doctoRelacionados = new CDoctoRelacionado();
+    private CDoctoRelacionado[] doctoRelacionados;
     
     public string FechaPago
     {
@@ -52,17 +53,21 @@ public class CComplemento
         get { return tipoCambioP; }
         set { tipoCambioP = value; }
     }
+    public string NumOperacion
+    {
+        get { return numOperacion; }
+        set { numOperacion = value; }
+    }
+    public string NomBancoOrdExt
+    {
+        get { return nomBancoOrdExt; }
+        set { nomBancoOrdExt = value; }
+    }
 
     public string RfcEmisorCtaOrd
     {
         get { return rfcEmisorCtaOrd; }
         set { rfcEmisorCtaOrd = value; }
-    }
-
-    public string NomBancoOrdExt
-    {
-        get { return nomBancoOrdExt; }
-        set { nomBancoOrdExt = value; }
     }
 
     public string CtaOrdenante
@@ -106,7 +111,7 @@ public class CComplemento
         set { selloPago = value; }
     }
 
-    public CDoctoRelacionado DoctoRelacionados
+    public CDoctoRelacionado[] DoctoRelacionados
     {
         get { return doctoRelacionados; }
         set { doctoRelacionados = value; }
