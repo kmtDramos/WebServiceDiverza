@@ -51,8 +51,12 @@ public class PagosXML
         "                FechaPago = \"" + Comprobante.Complementos.FechaPago + "\" " + System.Environment.NewLine +
         "                FormaDePagoP = \"" + Comprobante.Complementos.FormaDePagoP + "\" " + System.Environment.NewLine +
         "                MonedaP = \"" + Comprobante.Complementos.MonedaP + "\" " + System.Environment.NewLine +
-        "                Monto = \"" + Comprobante.Complementos.Monto + "\" " + System.Environment.NewLine +
-        "                NumOperacion = \"" + Comprobante.Complementos.NumOperacion + "\" " + System.Environment.NewLine;
+        "                Monto = \"" + Comprobante.Complementos.Monto + "\" " + System.Environment.NewLine;
+        if (Comprobante.Complementos.NumOperacion != "")
+        {
+            xml +=
+            "            NumOperacion = \"" + Comprobante.Complementos.NumOperacion + "\" " + System.Environment.NewLine;
+        }
         if (Comprobante.Complementos.TipoCambioP != "")
         {
             xml +=
@@ -66,7 +70,7 @@ public class PagosXML
         if (Comprobante.Complementos.RfcEmisorCtaBen != "") {
             xml +=
             "           RfcEmisorCtaBen = \"" + Comprobante.Complementos.RfcEmisorCtaBen + "\" " + System.Environment.NewLine +
-            "           CtaBeneficiario = \"" + Comprobante.Complementos.CtaBeneficiario + "\" " + System.Environment.NewLine;
+            "           CtaBeneficiario = \"" + Comprobante.Complementos.CtaBeneficiario + "\" ";
         }
         //"                NomBancoOrdExt = \"" + Comprobante.Complementos.NomBancoOrdExt + "\" " + System.Environment.NewLine +
         //"                TipoCadPago = \"" + Comprobante.Complementos.TipoCadPago + "\" " + System.Environment.NewLine +
@@ -74,7 +78,7 @@ public class PagosXML
         //"                CadPago = \"" + Comprobante.Complementos.CadPago + "\" " + System.Environment.NewLine +
         //"                SelloPago = \"" + Comprobante.Complementos.SelloPago + "\" " + System.Environment.NewLine +
         xml +=
-        "       > " + System.Environment.NewLine;
+        "> " + System.Environment.NewLine;
         foreach (CDoctoRelacionado Documento in Comprobante.Complementos.DoctoRelacionados)
         {
             xml +=
@@ -90,10 +94,21 @@ public class PagosXML
             }
             xml +=
             "                   MetodoDePagoDR = \"" + Documento.MetodoDePagoDR + "\" " + System.Environment.NewLine +
-            "                   NumParcialidad = \"" + Documento.NumParcialidad + "\" " + System.Environment.NewLine +
-            "                   ImpSaldoAnt = \"" + Documento.ImpSaldoAnt + "\" " + System.Environment.NewLine +
-            "                   ImpPagado = \"" + Documento.ImpPagado + "\" " + System.Environment.NewLine +
-            "                   ImpSaldoInsoluto = \"" + Documento.ImpSaldoInsoluto + "\" /> " + System.Environment.NewLine;
+            "                   NumParcialidad = \"" + Documento.NumParcialidad + "\" " + System.Environment.NewLine;
+            if (Documento.MetodoDePagoDR != "PUE")
+            {
+                xml +=
+                "                   ImpSaldoAnt = \"" + Documento.ImpSaldoAnt + "\" " + System.Environment.NewLine;
+            }
+            xml += 
+            "                   ImpPagado = \"" + Documento.ImpPagado + "\" " + System.Environment.NewLine;
+            if (Documento.MetodoDePagoDR != "PUE")
+            {
+                xml +=
+                "               ImpSaldoInsoluto = \"" + Documento.ImpSaldoInsoluto + "\" ";
+            }
+            xml +=
+            " /> " + System.Environment.NewLine;
         }
         xml +=
         "           </pago10:Pago > " + System.Environment.NewLine +
