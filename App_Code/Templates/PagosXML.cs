@@ -67,6 +67,10 @@ public class PagosXML
             "           RfcEmisorCtaOrd = \"" + Comprobante.Complementos.RfcEmisorCtaOrd + "\" " + System.Environment.NewLine +
             "           CtaOrdenante = \"" + Comprobante.Complementos.CtaOrdenante + "\" " + System.Environment.NewLine;
         }
+        if (Comprobante.Complementos.NomBancoOrdExt != "") {
+            xml +=
+            "           NomBancoOrdExt = \"" + Comprobante.Complementos.NomBancoOrdExt + "\" " + System.Environment.NewLine;
+        }
         if (Comprobante.Complementos.RfcEmisorCtaBen != "") {
             xml +=
             "           RfcEmisorCtaBen = \"" + Comprobante.Complementos.RfcEmisorCtaBen + "\" " + System.Environment.NewLine +

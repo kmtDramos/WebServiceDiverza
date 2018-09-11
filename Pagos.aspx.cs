@@ -152,6 +152,7 @@ public partial class Pagos : System.Web.UI.Page
         comprobante.Complementos.NumOperacion = Convert.ToString(Complemento["NumOperacion"]);
         comprobante.Complementos.RfcEmisorCtaOrd = Convert.ToString(Complemento["RfcEmisorCtaOrd"]);
         comprobante.Complementos.CtaOrdenante = Convert.ToString(Complemento["CtaOrdenante"]);
+        comprobante.Complementos.NomBancoOrdExt = Convert.ToString(Complemento["NomBancoOrdExt"]);
         comprobante.Complementos.RfcEmisorCtaBen = Convert.ToString(Complemento["RfcEmisorCtaBen"]);
         comprobante.Complementos.CtaBeneficiario = Convert.ToString(Complemento["CtaBeneficiario"]);
         //comprobante.Complementos.TipoCadPago = Convert.ToString(Complemento["TipoCadPago"]);
@@ -209,12 +210,12 @@ public partial class Pagos : System.Web.UI.Page
     {
         string RFCCliente = RFC.Replace("&amp;", "&");
         string nameFile = Serie + Folio;
-        System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Pagos\out\" + RFCCliente);
-        System.IO.File.WriteAllBytes(@"" + RutaCFDI + @"\Pagos\out\" + RFCCliente + @"\" + nameFile + ".zip", Decode(Contenido));
+        System.IO.Directory.CreateDirectory(@"" + RutaCFDI + @"\Pago\out\" + RFCCliente);
+        System.IO.File.WriteAllBytes(@"" + RutaCFDI + @"\Pago\out\" + RFCCliente + @"\" + nameFile + ".zip", Decode(Contenido));
 
         //Descomprimir zip
-        string zipPath = @"" + RutaCFDI + @"\Pagos\out\" + RFCCliente + @"\" + nameFile + ".zip";
-        string extractPath = @"" + RutaCFDI + @"\Pagos\out\" + RFCCliente;
+        string zipPath = @"" + RutaCFDI + @"\Pago\out\" + RFCCliente + @"\" + nameFile + ".zip";
+        string extractPath = @"" + RutaCFDI + @"\Pago\out\" + RFCCliente;
 
         ZipArchive archive = ZipFile.OpenRead(zipPath);
         {
